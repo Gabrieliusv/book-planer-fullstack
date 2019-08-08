@@ -8,9 +8,7 @@ const Item = require("../../models/Item");
 //@desc Get All Items
 //@access Public
 router.get("/", (req, res) => {
-  Item.find()
-    .sort({ date: -1 })
-    .then(items => res.json(items));
+  Item.find().then(items => res.json(items));
 });
 
 //@route POST api/items
@@ -18,7 +16,13 @@ router.get("/", (req, res) => {
 //@access Public
 router.post("/", (req, res) => {
   const newItem = new Item({
-    name: req.body.name
+    name: req.body.name,
+    live: req.body.live,
+    born: req.body.born,
+    philosophy: req.body.philosophy,
+    abilities: req.body.abilities,
+    physicalD: req.body.physicalD,
+    characterD: req.body.characterD
   });
 
   newItem.save().then(item => res.json(item));

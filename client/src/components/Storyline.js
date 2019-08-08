@@ -70,7 +70,7 @@ function StoryLine(props) {
     });
 
     useEffect(() => {
-        const info = charactersInfo.filter(i => i.id === characterInfoWindow);
+        const info = charactersInfo.filter(i => i._id === characterInfoWindow);
         setCharacter(...info);
         return () => {
             handleCancel();

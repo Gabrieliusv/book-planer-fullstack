@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, useMediaQuery, TextField, Grid } from '@material-ui/core';
-import uuid from 'uuid';
 import { connect } from 'react-redux';
 import { addCharacter } from '../redux/actions/characterActions';
 import { toggleAddCharacter } from '../redux/actions/navigationActions'
@@ -21,7 +20,6 @@ function AddCharacter(props) {
         characterD: '',
         philosophy: '',
         abilities: '',
-        id: uuid(),
         story: [],
     });
 
@@ -42,7 +40,6 @@ function AddCharacter(props) {
             characterD: '',
             philosophy: '',
             abilities: '',
-            id: uuid(),
             story: [],
         });
         toggleAddCharacter();

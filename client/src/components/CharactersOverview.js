@@ -99,10 +99,10 @@ function CharactersOverview(props) {
             {charactersInfo.length > 0 ?
                 <Grid container spacing={8}>
                     {charactersInfo.map((i) =>
-                        <Grid item xs={12} key={i.id} align="center">
+                        <Grid item xs={12} key={i._id} align="center">
                             <Typography variant="h6"> {i.name} </Typography>
                             {i.story.length === 0 ?
-                                <CustomButton variant="contained" onClick={() => openCharacter(i.id)}>Create Storyline</CustomButton>
+                                <CustomButton variant="contained" onClick={() => openCharacter(i._id)}>Create Storyline</CustomButton>
                                 :
                                 storylineChart(i.story)
                             }
