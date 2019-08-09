@@ -66,10 +66,12 @@ export const restoreCharacterAtIndex = (character, index) => {
   };
 };
 
-export const editCharacter = (character, index) => {
-  return {
-    type: EDIT_CHARACTER,
-    payload: character,
-    index
-  };
+export const editCharacter = (character, index) => dispatch => {
+  axios.patch(`/api/items/${character._id}`, character).then(res =>
+    dispatch({
+      type: EDIT_CHARACTER,
+      payload: character,
+      index
+    })
+  )
 };

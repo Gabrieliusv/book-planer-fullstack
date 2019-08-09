@@ -37,4 +37,13 @@ router.delete("/:id", (req, res) => {
     .catch(err => res.status(404).json({ success: false }));
 });
 
+//@route PATCH api/items/:id
+//@desc Patch An Item
+//@access Public
+router.patch("/:id", (req, res) => {
+  Item.findById(req.params.id)
+    .then(item => item.updateOne({ $set: req.body }).then(() => res.json({ success: true })))
+    .catch(err => res.status(404).json({ success: false }));
+});
+
 module.exports = router;
