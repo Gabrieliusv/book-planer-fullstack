@@ -25,6 +25,10 @@ router.post("/", (req, res) => {
     characterD: req.body.characterD
   });
 
+  if (!newItem.name) {
+    return res.status(400).json({ msg: 'Please include a character name' })
+  }
+
   newItem.save().then(item => res.json(item));
 });
 

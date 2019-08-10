@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   GET_CHARACTERS,
   ADD_CHARACTER,
@@ -8,11 +8,11 @@ import {
   RESTORE_CHARACTER_AT_INDEX,
   EDIT_CHARACTER,
   CHARACTERS_LOADING
-} from "./types";
+} from './types';
 
 export const getCharacters = () => dispatch => {
   dispatch(setCharactersLoading());
-  axios.get("/api/items").then(res =>
+  axios.get('/api/items').then(res =>
     dispatch({
       type: GET_CHARACTERS,
       payload: res.data
@@ -36,7 +36,7 @@ export const deleteCharacter = id => dispatch => {
 };
 
 export const addCharacter = character => dispatch => {
-  axios.post("/api/items", character).then(res =>
+  axios.post('/api/items', character).then(res =>
     dispatch({
       type: ADD_CHARACTER,
       payload: res.data
