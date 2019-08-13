@@ -190,16 +190,20 @@ router.put(
       .isEmpty()
   ],
   async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     try {
       const character = await Character.findById(req.params.id);
 
-      if (character.user.toString() !== req.user.id) {
-        return res.status(401).json({ msg: 'User not authorized' });
+      if (!character) {
+        return res.status(404).json({ msg: 'Character not found' });
       }
 
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+      if (character.user.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'User not authorized' });
       }
 
       const newStory = { ...req.body };
@@ -210,6 +214,82 @@ router.put(
 
       res.json(character.story);
     } catch (err) {
+      if (err.kind === 'ObjectId') {
+        return res.status(404).json({ msg: 'Character not found' });
+      }
+
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+//@route PATCH api/characters/story/:id/:story_id
+//@desc update a story
+//@access Private
+
+router.patch(
+  '/story/:id/:story_id',
+  auth,
+  [
+    check('event', 'Event ir required')
+      .not()
+      .isEmpty(),
+    check('time', 'Time ir required')
+      .not()
+      .isEmpty(),
+    check('effect', 'Effect ir required')
+      .not()
+      .isEmpty(),
+    check('intensity', 'Intensity ir required')
+      .not()
+      .isEmpty(),
+    check('title', 'Title ir required')
+      .not()
+      .isEmpty(),
+    check('beforeColor', 'Before Color ir required')
+      .not()
+      .isEmpty(),
+    check('color', 'Color ir required')
+      .not()
+      .isEmpty()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      let character = await Character.findById(req.params.id);
+
+      if (character.user.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'User not authorized' });
+      }
+
+      if (!character) {
+        return res.status(404).json({ msg: 'Character not found' });
+      }
+
+      //Pull out story
+      const story = character.story.find(
+        story => story.id === req.params.story_id
+      );
+      if (!story) {
+        return res.status(404).json({ msg: 'Story does not exist' });
+      }
+
+      const storyIndex = character.story.indexOf(story);
+
+      character.story.splice(storyIndex, 1, req.body);
+
+      await character.save();
+
+      res.json(character.story);
+    } catch (err) {
+      if (err.kind === 'ObjectId') {
+        return res.status(404).json({ msg: 'Character not found' });
+      }
+
       console.error(err.message);
       res.status(500).send('Server Error');
     }
