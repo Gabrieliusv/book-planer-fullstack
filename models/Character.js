@@ -14,7 +14,6 @@ const CharacterSchema = new mongoose.Schema({
   characterD: { type: String, default: '' },
   story: [
     {
-      CharacterId: { type: String, reQuired: true },
       event: { type: String, reQuired: true },
       time: { type: String, reQuired: true },
       effect: { type: String, reQuired: true },
