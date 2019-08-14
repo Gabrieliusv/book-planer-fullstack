@@ -47,7 +47,8 @@ router.post(
         philosophy: req.body.philosophy,
         abilities: req.body.abilities,
         physicalD: req.body.physicalD,
-        characterD: req.body.characterD
+        characterD: req.body.characterD,
+        inTrash: false
       });
 
       const character = await newCharacter.save();
@@ -130,12 +131,56 @@ router.patch(
   }
 );
 
-//@route DELETE api/character/:id
+//@route DELETE api/character
 //@desc Delete a character
 //@access Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete(
+  '/',
+  auth,
+  [
+    check('id', 'Character id is required')
+      .not()
+      .isEmpty()
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      const authorization = await Character.findOne({
+        $and: [{ _id: { $in: req.body.id } }, { user: { $ne: req.user.id } }]
+      });
+
+      if (authorization) {
+        return res.status(401).json({ msg: 'User not authorized' });
+      }
+
+      await Character.deleteMany({
+        $and: [{ _id: { $in: req.body.id } }, { user: req.user.id }]
+      });
+
+      return res.json({ msg: 'Characters deleted' });
+      //  }
+    } catch (err) {
+      console.error(err.message);
+
+      if (err.kind === 'ObjectId') {
+        return res.status(404).json({ msg: 'Character not found' });
+      }
+
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+//@route PATCH api/character/trash/:id
+//@desc Move Character to Trash
+//@access Private
+router.patch('/trash/:id', auth, async (req, res) => {
   try {
-    const character = await Character.findById(req.params.id);
+    let character = await Character.findById(req.params.id);
 
     if (!character) {
       return res.status(404).json({ msg: 'Character not found' });
@@ -145,9 +190,19 @@ router.delete('/:id', auth, async (req, res) => {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
-    await character.remove();
+    if (character.inTrash === true) {
+      return res.status(400).json({ msg: 'Character is already in trash' });
+    }
 
-    res.json({ msg: 'Caracter removed' });
+    if (character) {
+      character = await Character.findOneAndUpdate(
+        { _id: req.params.id },
+        { $set: { inTrash: true } },
+        { new: true }
+      );
+
+      return res.json({ msg: 'Character moved to trash' });
+    }
   } catch (err) {
     console.error(err.message);
 
@@ -158,6 +213,51 @@ router.delete('/:id', auth, async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
+//@route PATCH api/character/trash/manage/all
+//@desc Move Characters from Trash
+//@access Private
+router.patch(
+  '/trash/manage/all',
+  auth,
+  [
+    check('id', 'Character id is required')
+      .not()
+      .isEmpty()
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      const authorization = await Character.findOne({
+        $and: [{ _id: { $in: req.body.id } }, { user: { $ne: req.user.id } }]
+      });
+
+      if (authorization) {
+        return res.status(401).json({ msg: 'User not authorized' });
+      }
+
+      await Character.updateMany(
+        { $and: [{ _id: { $in: req.body.id } }, { user: req.user.id }] },
+        { inTrash: false }
+      );
+
+      return res.json({ msg: 'Characters moved from trash' });
+      //  }
+    } catch (err) {
+      console.error(err.message);
+
+      if (err.kind === 'ObjectId') {
+        return res.status(404).json({ msg: 'Character not found' });
+      }
+
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 //@route PUT api/characters/story/:id
 //@desc add a story
