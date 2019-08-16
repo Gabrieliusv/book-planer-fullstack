@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Image from '../images/book.jpg';
+import Image1 from '../images/book.jpg';
+import Image2 from '../images/pc-mobile.png';
 import {
   Grid,
   Paper,
@@ -10,26 +11,30 @@ import {
   Box
 } from '@material-ui/core';
 
-const appBar = 66;
+const appBar = 57;
 
 const useStyles = makeStyles(theme => ({
   landing: {
-    backgroundImage: `url(${Image})`,
+    backgroundImage: `url(${Image1})`,
     backgroundSize: 'cover',
-    position: 'relative',
-    height: `calc(100vh - ${appBar}px)`
+    backgroundAttachment: 'fixed',
+    width: '100vw'
   },
   container: {
     width: '100%',
-    height: '100%',
-    margin: 0
+    minHeight: `calc(100vh - ${appBar}px)`,
+    paddingTop: theme.spacing(4)
   },
   paper: {
     background: 'rgba(241, 241, 239, 0.7)'
   },
-  containerItem: {
+  showcase: { maxWidth: 700 },
+  signup: {
     maxHeight: 800,
-    maxWidth: 500
+    maxWidth: 450
+  },
+  img: {
+    width: '100%'
   }
 }));
 
@@ -56,32 +61,32 @@ const Landing = () => {
       <Grid
         container
         className={classes.container}
-        spacing={7}
+        spacing={2}
         direction='row'
         justify='center'
         alignItems='center'
       >
-        <Grid item xs={12} sm={6} className={classes.containerItem}>
-          <Paper elevation={2} className={classes.paper}>
-            <Grid
-              container
-              direction='column'
-              justify='center'
-              alignItems='center'
-            >
-              <Typography variant='h6'> Book Planner Features</Typography>
-
-              <Typography variant='body1'>Plan your book characters</Typography>
-
-              <Typography variant='body1'> Create Storylines</Typography>
-
-              <Typography variant='body1'>
-                Overview created story arcs
+        <Grid item xs={11} sm={9} md={7} lg={7} className={classes.showcase}>
+          <Grid
+            container
+            direction='column'
+            justify='center'
+            alignItems='center'
+          >
+            <Box p={1}>
+              <Typography variant='h6' align='center'>
+                Start Writing your book today!
               </Typography>
-            </Grid>
-          </Paper>
+              <Typography variant='subtitle2' align='center'>
+                The book planner will help you plan your next novel, characters
+                and storylines. It provides a graphical overview of character's
+                storyline for easier story planing.
+              </Typography>
+            </Box>
+            <img className={classes.img} src={Image2} alt='pc mobile view' />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6} className={classes.containerItem}>
+        <Grid item xs={11} sm={7} md={5} lg={5} className={classes.signup}>
           <Paper elevation={2} className={classes.paper}>
             <Box p={2}>
               <Typography variant='h6' align='center'>

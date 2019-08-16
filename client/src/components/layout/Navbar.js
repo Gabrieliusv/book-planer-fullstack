@@ -10,16 +10,17 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
-    height: 66
+    flexGrow: 1
   },
   textField: {
-    marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1)
   },
+
   form: {
+    margin: 0,
+    padding: 0,
     display: 'none',
-    [theme.breakpoints.up(750)]: {
+    [theme.breakpoints.up(720)]: {
       display: 'block'
     }
   },
@@ -28,12 +29,13 @@ const useStyles = makeStyles(theme => ({
   },
   mobile: {
     display: 'block',
-    [theme.breakpoints.up(750)]: {
+    [theme.breakpoints.up(720)]: {
       display: 'none'
     }
   },
   nav: {
-    backgroundColor: '#FDFEFB'
+    backgroundColor: '#FDFEFB',
+    opacity: 0.9
   }
 }));
 
