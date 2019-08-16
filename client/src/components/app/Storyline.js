@@ -3,8 +3,8 @@ import { Grid, Paper, Typography, Icon, Button, Zoom, TextField, InputLabel, For
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import EditStoryline from './EditStoryline';
 import { connect } from 'react-redux';
-import { editCharacter } from '../redux/actions/characterActions';
-import { openEditStoryline } from '../redux/actions/navigationActions'
+import { editCharacter } from '../../redux/actions/characterActions';
+import { openEditStoryline } from '../../redux/actions/navigationActions'
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(theme => ({

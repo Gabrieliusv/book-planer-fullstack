@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   AppBar,
   CssBaseline,
@@ -14,22 +14,22 @@ import {
   Hidden,
   IconButton,
   List
-} from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddCircle from "@material-ui/icons/AddCircle";
-import AddCharacter from "./AddCharacter";
-import Trash from "./Trash";
-import ConfirmDel from "./ConfirmDel";
-import CharInfoDisplay from "./CharInfoDisplay";
-import EditCharacter from "./EditCharacter";
-import CharactersOverview from "./CharactersOverview";
-import { connect } from "react-redux";
+} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddCircle from '@material-ui/icons/AddCircle';
+import AddCharacter from './AddCharacter';
+import Trash from './Trash';
+import ConfirmDel from './ConfirmDel';
+import CharInfoDisplay from './CharInfoDisplay';
+import EditCharacter from './EditCharacter';
+import CharactersOverview from './CharactersOverview';
+import { connect } from 'react-redux';
 import {
   getCharacters,
   deleteCharacter
-} from "../redux/actions/characterActions";
+} from '../../redux/actions/characterActions';
 import {
   toggleAddCharacter,
   toggleTrash,
@@ -37,39 +37,39 @@ import {
   openEditCharacter,
   openCharacter,
   closeCharacter
-} from "../redux/actions/navigationActions";
-import PropTypes from "prop-types";
+} from '../../redux/actions/navigationActions';
+import PropTypes from 'prop-types';
 
 const drawerWidth = 250;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "flex"
+    display: 'flex'
   },
   drawer: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up('sm')]: {
       width: drawerWidth,
       flexShrink: 0
     }
   },
   appBar: {
     marginLeft: drawerWidth,
-    backgroundColor: "#2e3136",
-    [theme.breakpoints.up("sm")]: {
+    backgroundColor: '#2e3136',
+    [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`
     }
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
-      display: "none"
+    [theme.breakpoints.up('sm')]: {
+      display: 'none'
     }
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: "#36393e",
-    color: "white"
+    backgroundColor: '#36393e',
+    color: 'white'
   },
   content: {
     flexGrow: 1,
@@ -78,10 +78,10 @@ const useStyles = makeStyles(theme => ({
   },
   listItem: {
     padding: theme.spacing(1),
-    wordBreak: "break-word"
+    wordBreak: 'break-word'
   },
   divider: {
-    backgroundColor: "#fff"
+    backgroundColor: '#fff'
   }
 }));
 
@@ -143,7 +143,7 @@ function CustomNav(props) {
       <div className={classes.toolbar} />
       <List>
         <ListItem button onClick={handleCharactersOverview}>
-          <ListItemText primary="Storylines overview" />
+          <ListItemText primary='Storylines overview' />
         </ListItem>
       </List>
       <Divider className={classes.divider} />
@@ -151,48 +151,48 @@ function CustomNav(props) {
         {charactersInfo === null
           ? null
           : charactersInfo.map((i, index) => (
-            <ListItem
-              button
-              key={i._id}
-              onClick={() => handleSelectChar(i._id)}
-            >
-              <ListItemText primary={i.name} className={classes.listItem} />
-              {i._id !== characterInfoWindow ? null : (
-                <>
-                  <Tooltip title="Edit">
-                    <IconButton
-                      aria-label="Edit"
-                      onClick={() => handleOpenEditCharacter(i, index)}
-                    >
-                      <Icon>edit_icon</Icon>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Delete">
-                    <IconButton
-                      aria-label="Delete"
-                      onClick={() => handleDelete(i, index)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                </>
-              )}
-            </ListItem>
-          ))}
+              <ListItem
+                button
+                key={i._id}
+                onClick={() => handleSelectChar(i._id)}
+              >
+                <ListItemText primary={i.name} className={classes.listItem} />
+                {i._id !== characterInfoWindow ? null : (
+                  <>
+                    <Tooltip title='Edit'>
+                      <IconButton
+                        aria-label='Edit'
+                        onClick={() => handleOpenEditCharacter(i, index)}
+                      >
+                        <Icon>edit_icon</Icon>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title='Delete'>
+                      <IconButton
+                        aria-label='Delete'
+                        onClick={() => handleDelete(i, index)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                )}
+              </ListItem>
+            ))}
       </List>
       <Divider />
       <List>
-        <ListItem button key={"addCharacter"} onClick={toggleAddCharacter}>
+        <ListItem button key={'addCharacter'} onClick={toggleAddCharacter}>
           <ListItemIcon>
             <AddCircle />
           </ListItemIcon>
-          <ListItemText primary={"Add Character"} />
+          <ListItemText primary={'Add Character'} />
         </ListItem>
-        <ListItem button key={"trash"} onClick={toggleTrash}>
+        <ListItem button key={'trash'} onClick={toggleTrash}>
           <ListItemIcon>
             <DeleteIcon />
           </ListItemIcon>
-          <ListItemText primary={"Trash"} />
+          <ListItemText primary={'Trash'} />
         </ListItem>
       </List>
     </div>
@@ -201,28 +201,28 @@ function CustomNav(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar position='fixed' className={classes.appBar}>
         <Toolbar>
           <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            edge="start"
+            color='inherit'
+            aria-label='Open drawer'
+            edge='start'
             onClick={handleDrawerToggle}
             className={classes.menuButton}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant='h6' noWrap>
             Book Planner
           </Typography>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer}>
-        <Hidden smUp implementation="css">
+        <Hidden smUp implementation='css'>
           <Drawer
             container={container}
-            variant="temporary"
-            anchor={theme.direction === "rtl" ? "right" : "left"}
+            variant='temporary'
+            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
             open={mobileOpen}
             onClose={handleDrawerToggle}
             classes={{
@@ -235,12 +235,12 @@ function CustomNav(props) {
             {drawer}
           </Drawer>
         </Hidden>
-        <Hidden xsDown implementation="css">
+        <Hidden xsDown implementation='css'>
           <Drawer
             classes={{
               paper: classes.drawerPaper
             }}
-            variant="permanent"
+            variant='permanent'
             open
           >
             {drawer}
@@ -278,4 +278,16 @@ const mapStateToProps = state => ({
   navigation: state.navigation
 });
 
-export default connect(mapStateToProps, { getCharacters, deleteCharacter, toggleAddCharacter, toggleTrash, openDeleteNotification, openEditCharacter, openCharacter, closeCharacter })(CustomNav);
+export default connect(
+  mapStateToProps,
+  {
+    getCharacters,
+    deleteCharacter,
+    toggleAddCharacter,
+    toggleTrash,
+    openDeleteNotification,
+    openEditCharacter,
+    openCharacter,
+    closeCharacter
+  }
+)(CustomNav);

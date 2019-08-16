@@ -3,8 +3,8 @@ import { Grid, Button, Zoom, TextField, InputLabel, FormHelperText, FormControl,
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { closeEditStoryline } from '../redux/actions/navigationActions';
-import { editCharacter } from '../redux/actions/characterActions';
+import { closeEditStoryline } from '../../redux/actions/navigationActions';
+import { editCharacter } from '../../redux/actions/characterActions';
 
 const useStyles = makeStyles(theme => ({
     margin: {

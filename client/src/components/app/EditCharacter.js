@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Grid, useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
-import { closeEditCharacter } from '../redux/actions/navigationActions';
-import { editCharacter } from '../redux/actions/characterActions';
+import { closeEditCharacter } from '../../redux/actions/navigationActions';
+import { editCharacter } from '../../redux/actions/characterActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
