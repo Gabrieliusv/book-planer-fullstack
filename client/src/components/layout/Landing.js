@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Image1 from '../images/book.jpg';
 import Image2 from '../images/pc-mobile.png';
@@ -11,19 +11,20 @@ import {
   Box
 } from '@material-ui/core';
 
-const appBar = 57;
+const appBar = 64;
 
 const useStyles = makeStyles(theme => ({
   landing: {
     backgroundImage: `url(${Image1})`,
     backgroundSize: 'cover',
     backgroundAttachment: 'fixed',
-    width: '100vw'
+    width: '100%'
   },
   container: {
     width: '100%',
     minHeight: `calc(100vh - ${appBar}px)`,
-    paddingTop: theme.spacing(4)
+    paddingTop: theme.spacing(4),
+    margin: 0
   },
   paper: {
     background: 'rgba(241, 241, 239, 0.7)'
@@ -35,15 +36,46 @@ const useStyles = makeStyles(theme => ({
   },
   img: {
     width: '100%'
+  },
+  alert: {
+    margin: theme.spacing(1)
   }
 }));
 
 const Landing = () => {
   const classes = useStyles();
+  const [requiredField, setRequiredField] = useState(false);
+  const [match, setMatch] = useState(true);
+  const [emailValidation, setEmailValidation] = useState(true);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password2: ''
+  });
 
-  const handleChange = () => {};
+  const { name, email, password, password2 } = formData;
 
-  const handleLogin = () => {};
+  const handleChange = e => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleRegister = () => {
+    const isEmpty = Object.values(formData).some(x => x === '');
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (isEmpty) {
+      setRequiredField(formData);
+    } else if (password !== password2) {
+      setMatch(false);
+    } else if (!regex.test(email)) {
+      setEmailValidation(false);
+    } else {
+      console.log(formData);
+    }
+  };
 
   const CustomButton = withStyles(theme => ({
     root: {
@@ -61,7 +93,7 @@ const Landing = () => {
       <Grid
         container
         className={classes.container}
-        spacing={2}
+        spacing={4}
         direction='row'
         justify='center'
         alignItems='center'
@@ -94,35 +126,75 @@ const Landing = () => {
               </Typography>
               <form>
                 <TextField
+                  error={requiredField.name === ''}
                   id='register-name'
                   label='Name'
-                  onChange={handleChange('name')}
+                  onChange={e => handleChange(e)}
+                  type='name'
+                  autoComplete='name'
+                  name='name'
+                  value={name}
                   margin='normal'
                   variant='outlined'
                 />
                 <TextField
+                  error={requiredField.email === '' || !emailValidation}
                   id='register-email'
                   label='Email'
-                  onChange={handleChange('name')}
+                  onChange={e => handleChange(e)}
                   type='email'
                   name='email'
+                  value={email}
                   autoComplete='email'
                   margin='normal'
                   variant='outlined'
                   fullWidth
                 />
+                {emailValidation || requiredField.email === '' ? null : (
+                  <Typography
+                    variant='subtitle2'
+                    color='error'
+                    className={classes.alert}
+                  >
+                    Invalid email address
+                  </Typography>
+                )}
                 <TextField
+                  error={requiredField.password === '' || !match}
                   id='register-password'
                   label='Password'
-                  onChange={handleChange('name')}
+                  onChange={e => handleChange(e)}
                   type='password'
-                  autoComplete='current-password'
+                  name='password'
+                  value={password}
+                  autoComplete='password'
                   margin='normal'
                   variant='outlined'
                   fullWidth
                 />
-
-                <CustomButton variant='contained' onClick={handleLogin}>
+                <TextField
+                  error={requiredField.password2 === '' || !match}
+                  id='register-confirm-password'
+                  label='Confirm Password'
+                  onChange={e => handleChange(e)}
+                  type='password'
+                  name='password2'
+                  autoComplete='password'
+                  value={password2}
+                  margin='normal'
+                  variant='outlined'
+                  fullWidth
+                />
+                {match ? null : (
+                  <Typography
+                    variant='subtitle2'
+                    color='error'
+                    className={classes.alert}
+                  >
+                    Passwords do not match
+                  </Typography>
+                )}
+                <CustomButton variant='contained' onClick={handleRegister}>
                   Sign up
                 </CustomButton>
               </form>

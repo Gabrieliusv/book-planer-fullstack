@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
   Typography,
   TextField,
-  Button
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
 } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
@@ -13,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   textField: {
-    marginRight: theme.spacing(1)
+    marginLeft: theme.spacing(1)
   },
 
   form: {
@@ -41,10 +45,38 @@ const useStyles = makeStyles(theme => ({
 
 const Navbar = () => {
   const classes = useStyles();
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [requiredField, setRequiredField] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const { email, password } = formData;
 
-  const handleChange = () => {};
+  const handleChange = e => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    const isEmpty = Object.values(formData).some(x => x === '');
+    if (isEmpty) {
+      setRequiredField(formData);
+    } else {
+      console.log(formData);
+    }
+  };
+
+  const handleLoginOpen = () => {
+    setLoginOpen(true);
+  };
+
+  const handleClose = () => {
+    setLoginOpen(false);
+    setRequiredField(false);
+  };
 
   const CustomButton = withStyles(theme => ({
     root: {
@@ -66,22 +98,27 @@ const Navbar = () => {
           </Typography>
           <form className={classes.form}>
             <TextField
+              error={requiredField.email === ''}
               id='login-email'
               label='Email'
               className={classes.textField}
-              onChange={handleChange('name')}
               margin='dense'
               type='email'
               name='email'
+              value={email}
+              onChange={e => handleChange(e)}
               autoComplete='email'
               variant='outlined'
             />
             <TextField
+              error={requiredField.password === ''}
               id='login-password'
               label='Password'
               className={classes.textField}
-              onChange={handleChange('name')}
               type='password'
+              name='password'
+              value={password}
+              onChange={e => handleChange(e)}
               autoComplete='current-password'
               margin='dense'
               variant='outlined'
@@ -93,11 +130,56 @@ const Navbar = () => {
           <CustomButton
             className={classes.mobile}
             variant='contained'
-            onClick={handleLogin}
+            onClick={handleLoginOpen}
           >
             Log In
           </CustomButton>
         </Toolbar>
+        <Dialog
+          open={loginOpen}
+          onClose={handleClose}
+          aria-labelledby='mobile-form'
+        >
+          <DialogTitle id='mobile-form'>Log In</DialogTitle>
+          <DialogContent>
+            <form className={classes.dialogForm}>
+              <TextField
+                error={requiredField.email === ''}
+                id='login-email'
+                label='Email'
+                margin='dense'
+                type='email'
+                name='email'
+                value={email}
+                onChange={e => handleChange(e)}
+                autoComplete='email'
+                variant='outlined'
+                fullWidth
+              />
+              <TextField
+                error={requiredField.password === ''}
+                id='login-password'
+                label='Password'
+                type='password'
+                name='password'
+                value={password}
+                onChange={e => handleChange(e)}
+                autoComplete='current-password'
+                margin='dense'
+                variant='outlined'
+                fullWidth
+              />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <CustomButton variant='contained' onClick={handleClose}>
+              Cancel
+            </CustomButton>
+            <CustomButton variant='contained' onClick={handleLogin}>
+              Log In
+            </CustomButton>
+          </DialogActions>
+        </Dialog>
       </AppBar>
     </div>
   );
