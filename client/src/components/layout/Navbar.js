@@ -8,9 +8,13 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  Snackbar
 } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { login } from '../../redux/actions/authActions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,10 +44,16 @@ const useStyles = makeStyles(theme => ({
   nav: {
     backgroundColor: '#FDFEFB',
     opacity: 0.9
+  },
+  alert: {
+    top: '70px'
+  },
+  marginLeft: {
+    marginLeft: theme.spacing(1)
   }
 }));
 
-const Navbar = () => {
+const Navbar = ({ login, alert }) => {
   const classes = useStyles();
   const [loginOpen, setLoginOpen] = useState(false);
   const [requiredField, setRequiredField] = useState(false);
@@ -62,10 +72,11 @@ const Navbar = () => {
 
   const handleLogin = () => {
     const isEmpty = Object.values(formData).some(x => x === '');
-    if (isEmpty) {
-      setRequiredField(formData);
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (isEmpty || !regex.test(email) || password.length < 6) {
+      setRequiredField(true);
     } else {
-      console.log(formData);
+      login(email, password);
     }
   };
 
@@ -98,7 +109,7 @@ const Navbar = () => {
           </Typography>
           <form className={classes.form}>
             <TextField
-              error={requiredField.email === ''}
+              error={requiredField === true}
               id='login-email'
               label='Email'
               className={classes.textField}
@@ -111,7 +122,7 @@ const Navbar = () => {
               variant='outlined'
             />
             <TextField
-              error={requiredField.password === ''}
+              error={requiredField === true}
               id='login-password'
               label='Password'
               className={classes.textField}
@@ -126,6 +137,17 @@ const Navbar = () => {
             <CustomButton variant='contained' onClick={handleLogin}>
               Log In
             </CustomButton>
+            {alert !== false && (
+              <Snackbar
+                open={alert !== false}
+                className={classes.alert}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                message={<span>{alert}</span>}
+              />
+            )}
           </form>
           <CustomButton
             className={classes.mobile}
@@ -144,7 +166,7 @@ const Navbar = () => {
           <DialogContent>
             <form className={classes.dialogForm}>
               <TextField
-                error={requiredField.email === ''}
+                error={requiredField === true}
                 id='login-email'
                 label='Email'
                 margin='dense'
@@ -157,7 +179,7 @@ const Navbar = () => {
                 fullWidth
               />
               <TextField
-                error={requiredField.password === ''}
+                error={requiredField === true}
                 id='login-password'
                 label='Password'
                 type='password'
@@ -170,6 +192,15 @@ const Navbar = () => {
                 fullWidth
               />
             </form>
+            {alert !== false && (
+              <Typography
+                className={classes.marginLeft}
+                variant='subtitle2'
+                color='error'
+              >
+                {alert}
+              </Typography>
+            )}
           </DialogContent>
           <DialogActions>
             <CustomButton variant='contained' onClick={handleClose}>
@@ -185,4 +216,15 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+Navbar.propTypes = {
+  login: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  alert: state.alert.loginAlert
+});
+
+export default connect(
+  mapStateToProps,
+  { login }
+)(Navbar);

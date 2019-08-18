@@ -221,7 +221,9 @@ const Landing = ({ register, setAlert, removeAlert }) => {
 };
 
 Landing.propTypes = {
-  register: PropTypes.func.isRequired
+  register: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
+  removeAlert: PropTypes.func.isRequired
 };
 
 export default connect(
