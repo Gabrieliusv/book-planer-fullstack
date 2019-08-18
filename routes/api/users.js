@@ -33,12 +33,19 @@ router.post(
     const { name, email, password } = req.body;
 
     try {
-      let user = await User.findOne({ email });
+      let checkName = await User.findOne({ name });
+      let checkEmail = await User.findOne({ email });
 
-      if (user) {
-        return res
-          .status(400)
-          .json({ error: [{ msg: 'User already exists' }] });
+      if (checkName) {
+        return res.status(400).json({
+          errors: [{ msg: 'User with this name is already registered' }]
+        });
+      }
+
+      if (checkEmail) {
+        return res.status(400).json({
+          errors: [{ msg: 'User with this email is already registered' }]
+        });
       }
 
       //Creating avatar

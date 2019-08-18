@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Image1 from '../images/book.jpg';
 import Image2 from '../images/pc-mobile.png';
+import { connect } from 'react-redux';
+import Alert from './Alert';
+import { register } from '../../redux/actions/authActions';
+import { setAlert, removeAlert } from '../../redux/actions/alertAction';
+import PropTypes from 'prop-types';
 import {
   Grid,
   Paper,
@@ -42,7 +47,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Landing = () => {
+const Landing = ({ register, setAlert, removeAlert }) => {
   const classes = useStyles();
   const [requiredField, setRequiredField] = useState(false);
   const [match, setMatch] = useState(true);
@@ -66,14 +71,24 @@ const Landing = () => {
   const handleRegister = () => {
     const isEmpty = Object.values(formData).some(x => x === '');
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const reset = () => {
+      setMatch(true);
+      setEmailValidation(true);
+      setRequiredField(false);
+    };
+    reset();
+    removeAlert();
     if (isEmpty) {
       setRequiredField(formData);
-    } else if (password !== password2) {
-      setMatch(false);
     } else if (!regex.test(email)) {
       setEmailValidation(false);
+    } else if (password !== password2) {
+      setMatch(false);
+    } else if (password.length < 6) {
+      setAlert('Please enter a password with 6 or more characters', 'error');
     } else {
-      console.log(formData);
+      reset();
+      register({ name, email, password });
     }
   };
 
@@ -185,15 +200,14 @@ const Landing = () => {
                   variant='outlined'
                   fullWidth
                 />
-                {match ? null : (
-                  <Typography
-                    variant='subtitle2'
-                    color='error'
-                    className={classes.alert}
-                  >
-                    Passwords do not match
-                  </Typography>
-                )}
+                <Box className={classes.alert}>
+                  <Alert />
+                  {match ? null : (
+                    <Typography variant='subtitle2' color='error'>
+                      Passwords do not match
+                    </Typography>
+                  )}
+                </Box>
                 <CustomButton variant='contained' onClick={handleRegister}>
                   Sign up
                 </CustomButton>
@@ -206,4 +220,11 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+Landing.propTypes = {
+  register: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { register, setAlert, removeAlert }
+)(Landing);
