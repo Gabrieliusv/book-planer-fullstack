@@ -13,19 +13,24 @@ import {
   Drawer,
   Hidden,
   IconButton,
-  List
+  List,
+  Menu,
+  MenuItem
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircle from '@material-ui/icons/AddCircle';
+import ProfileIcon from '@material-ui/icons/AccountCircle';
 import AddCharacter from './AddCharacter';
 import Trash from './Trash';
 import ConfirmDel from './ConfirmDel';
 import CharInfoDisplay from './CharInfoDisplay';
 import EditCharacter from './EditCharacter';
 import CharactersOverview from './CharactersOverview';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { logout } from '../../redux/actions/authActions';
 import {
   getCharacters,
   deleteCharacter
@@ -73,8 +78,11 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(4),
+    margin: theme.spacing(4),
     width: `calc(100% - ${drawerWidth}px)`
+  },
+  list: {
+    padding: 0
   },
   listItem: {
     padding: theme.spacing(1),
@@ -82,37 +90,50 @@ const useStyles = makeStyles(theme => ({
   },
   divider: {
     backgroundColor: '#fff'
+  },
+  title: {
+    flexGrow: 1
+  },
+  profileMenu: {
+    marginTop: 35
   }
 }));
 
-function CustomNav(props) {
-  const {
-    container,
-    toggleAddCharacter,
-    toggleTrash,
-    deleteCharacter,
-    getCharacters,
-    openDeleteNotification,
-    openEditCharacter,
-    openCharacter,
-    closeCharacter
-  } = props;
-  const { charactersInfo } = props.characters;
-  const {
+function CustomNav({
+  navigation: {
     editCharacterWindow,
     deleteNotificationWindow,
     trashWindow,
     addCharacterWindow,
     characterInfoWindow,
     charactersOverviewWindow
-  } = props.navigation;
+  },
+  container,
+  toggleAddCharacter,
+  toggleTrash,
+  deleteCharacter,
+  getCharacters,
+  openDeleteNotification,
+  openEditCharacter,
+  openCharacter,
+  closeCharacter,
+  logout,
+  characters: { charactersInfo },
+  auth: { isAuthenticated }
+}) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  useEffect(() => {
+  //Redirect if logged in
+  if (!isAuthenticated) {
+    return <Redirect to='/' />;
+  }
+
+  /*useEffect(() => {
     getCharacters();
-  }, [getCharacters]);
+  }, [getCharacters]);*/
 
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
@@ -138,6 +159,14 @@ function CustomNav(props) {
     setMobileOpen(false);
   };
 
+  const handleProfile = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  function handleProfileClose() {
+    setAnchorEl(null);
+  }
+
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -147,38 +176,37 @@ function CustomNav(props) {
         </ListItem>
       </List>
       <Divider className={classes.divider} />
-      <List>
-        {charactersInfo === null
-          ? null
-          : charactersInfo.map((i, index) => (
-              <ListItem
-                button
-                key={i._id}
-                onClick={() => handleSelectChar(i._id)}
-              >
-                <ListItemText primary={i.name} className={classes.listItem} />
-                {i._id !== characterInfoWindow ? null : (
-                  <>
-                    <Tooltip title='Edit'>
-                      <IconButton
-                        aria-label='Edit'
-                        onClick={() => handleOpenEditCharacter(i, index)}
-                      >
-                        <Icon>edit_icon</Icon>
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title='Delete'>
-                      <IconButton
-                        aria-label='Delete'
-                        onClick={() => handleDelete(i, index)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </>
-                )}
-              </ListItem>
-            ))}
+      <List className={classes.list}>
+        {charactersInfo.length > 0 &&
+          charactersInfo.map((i, index) => (
+            <ListItem
+              button
+              key={i._id}
+              onClick={() => handleSelectChar(i._id)}
+            >
+              <ListItemText primary={i.name} className={classes.listItem} />
+              {i._id !== characterInfoWindow ? null : (
+                <>
+                  <Tooltip title='Edit'>
+                    <IconButton
+                      aria-label='Edit'
+                      onClick={() => handleOpenEditCharacter(i, index)}
+                    >
+                      <Icon>edit_icon</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Delete'>
+                    <IconButton
+                      aria-label='Delete'
+                      onClick={() => handleDelete(i, index)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              )}
+            </ListItem>
+          ))}
       </List>
       <Divider />
       <List>
@@ -205,16 +233,36 @@ function CustomNav(props) {
         <Toolbar>
           <IconButton
             color='inherit'
-            aria-label='Open drawer'
+            aria-label='Open-drawer'
             edge='start'
             onClick={handleDrawerToggle}
             className={classes.menuButton}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' noWrap>
+          <Typography variant='h6' className={classes.title} noWrap>
             Book Planner
           </Typography>
+          <IconButton
+            color='inherit'
+            aria-controls='profile-menu'
+            aria-haspopup='true'
+            onClick={handleProfile}
+          >
+            <ProfileIcon />
+          </IconButton>
+          <Menu
+            id='profile-menu'
+            className={classes.profileMenu}
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleProfileClose}
+          >
+            <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
+            <MenuItem onClick={handleProfileClose}>My account</MenuItem>
+            <MenuItem onClick={logout}>Logout</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer}>
@@ -270,12 +318,15 @@ CustomNav.propTypes = {
   openDeleteNotification: PropTypes.func.isRequired,
   openEditCharacter: PropTypes.func.isRequired,
   openCharacter: PropTypes.func.isRequired,
-  closeCharacter: PropTypes.func.isRequired
+  closeCharacter: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   characters: state.characters,
-  navigation: state.navigation
+  navigation: state.navigation,
+  auth: state.auth
 });
 
 export default connect(
@@ -288,6 +339,7 @@ export default connect(
     openDeleteNotification,
     openEditCharacter,
     openCharacter,
-    closeCharacter
+    closeCharacter,
+    logout
   }
 )(CustomNav);

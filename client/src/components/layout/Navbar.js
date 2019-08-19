@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Navbar = ({ login, alert }) => {
+const Navbar = ({ login, alert, isAuthenticated }) => {
   const classes = useStyles();
   const [loginOpen, setLoginOpen] = useState(false);
   const [requiredField, setRequiredField] = useState(false);
@@ -217,11 +217,13 @@ const Navbar = ({ login, alert }) => {
 };
 
 Navbar.propTypes = {
-  login: PropTypes.func.isRequired
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
-  alert: state.alert.loginAlert
+  alert: state.alert.loginAlert,
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(

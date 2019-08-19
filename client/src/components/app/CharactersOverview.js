@@ -106,7 +106,11 @@ function CharactersOverview(props) {
 
   return (
     <>
-      {charactersInfo.length > 0 ? (
+      {charactersInfo.length === 0 ? (
+        <Typography variant='h6' align='center'>
+          Start planing your book by creating its characters, and story lines!
+        </Typography>
+      ) : charactersInfo.length > 0 ? (
         <Grid container spacing={8}>
           {charactersInfo.map(i => (
             <Grid item xs={12} key={i._id} align='center'>
@@ -124,10 +128,6 @@ function CharactersOverview(props) {
             </Grid>
           ))}
         </Grid>
-      ) : charactersInfo.length === 0 ? (
-        <Typography variant='h6' align='center'>
-          Start planing your book by creating its characters, and story lines!
-        </Typography>
       ) : null}
     </>
   );

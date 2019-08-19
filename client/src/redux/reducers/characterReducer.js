@@ -7,7 +7,7 @@ import {
   RESTORE_CHARACTER,
   RESTORE_CHARACTER_AT_INDEX,
   EDIT_CHARACTER
-} from "../actions/types";
+} from '../actions/types';
 
 const initialState = {
   charactersInfo: [],
@@ -15,7 +15,7 @@ const initialState = {
   loading: false
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case GET_CHARACTERS:
       return {
@@ -31,7 +31,9 @@ export default function (state = initialState, action) {
     case DELETE_CHARACTER:
       return {
         ...state,
-        charactersInfo: state.charactersInfo.filter(i => i._id !== action.payload),
+        charactersInfo: state.charactersInfo.filter(
+          i => i._id !== action.payload
+        ),
         inTrash: [
           ...state.inTrash,
           state.charactersInfo.find(i => i._id === action.payload)
