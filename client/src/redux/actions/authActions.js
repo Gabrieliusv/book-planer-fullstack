@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  NO_TOKEN,
   USER_LOADED,
   AUTH_ERROR,
   LOGIN_SUCCESS,
@@ -112,5 +113,12 @@ export const logout = () => dispatch => {
   localStorage.removeItem('token');
   dispatch({
     type: LOGOUT
+  });
+};
+
+//No token
+export const noToken = () => dispatch => {
+  dispatch({
+    type: NO_TOKEN
   });
 };

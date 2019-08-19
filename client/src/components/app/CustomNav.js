@@ -28,7 +28,6 @@ import ConfirmDel from './ConfirmDel';
 import CharInfoDisplay from './CharInfoDisplay';
 import EditCharacter from './EditCharacter';
 import CharactersOverview from './CharactersOverview';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../redux/actions/authActions';
 import {
@@ -125,11 +124,6 @@ function CustomNav({
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  //Redirect if logged in
-  if (!isAuthenticated) {
-    return <Redirect to='/' />;
-  }
 
   /*useEffect(() => {
     getCharacters();

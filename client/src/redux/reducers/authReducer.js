@@ -3,6 +3,7 @@ import {
   REGISTER_FAIL,
   USER_LOADED,
   AUTH_ERROR,
+  NO_TOKEN,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT
@@ -34,6 +35,7 @@ export default function(state = initialState, action) {
         isAuthenticated: true,
         loading: false
       };
+    case NO_TOKEN:
     case AUTH_ERROR:
     case REGISTER_FAIL:
     case LOGIN_FAIL:
