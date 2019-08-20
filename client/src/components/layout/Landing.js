@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Navbar from './Navbar';
+import Login from './Login';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Image1 from '../images/book.jpg';
 import Image2 from '../images/pc-mobile.png';
 import { connect } from 'react-redux';
 import Alert from './Alert';
 import { register } from '../../redux/actions/authActions';
-import { setAlert, removeAlert } from '../../redux/actions/alertAction';
+import { setAlert, removeAlert } from '../../redux/actions/alertActions';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -94,8 +94,8 @@ const Landing = ({ register, setAlert, removeAlert, isAuthenticated }) => {
     }
   };
 
-  //Redirect if logged in
-  if (isAuthenticated) {
+  //Redirect if with token
+  if (localStorage.token) {
     return <Redirect to='/dashboard' />;
   }
 
@@ -112,7 +112,7 @@ const Landing = ({ register, setAlert, removeAlert, isAuthenticated }) => {
 
   return (
     <>
-      <Navbar />
+      <Login />
       <div className={classes.landing}>
         <Grid
           container
