@@ -30,6 +30,7 @@ import EditCharacter from './EditCharacter';
 import CharactersOverview from './CharactersOverview';
 import { connect } from 'react-redux';
 import { logout } from '../../redux/actions/authActions';
+import { Link } from 'react-router-dom';
 import {
   getCharacters,
   deleteCharacter
@@ -95,6 +96,10 @@ const useStyles = makeStyles(theme => ({
   },
   profileMenu: {
     marginTop: 35
+  },
+  link: {
+    textDecoration: 'none',
+    color: '#000'
   }
 }));
 
@@ -253,8 +258,13 @@ function CustomNav({
             open={Boolean(anchorEl)}
             onClose={handleProfileClose}
           >
-            <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
+            <MenuItem>
+              <Link className={classes.link} to='/profile'>
+                Profile
+              </Link>
+            </MenuItem>
             <MenuItem onClick={handleProfileClose}>My account</MenuItem>
+            <MenuItem onClick={handleProfileClose}>Discussions</MenuItem>
             <MenuItem onClick={logout}>Logout</MenuItem>
           </Menu>
         </Toolbar>
