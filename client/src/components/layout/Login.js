@@ -4,17 +4,17 @@ import {
   Toolbar,
   Typography,
   TextField,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Snackbar
 } from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../redux/actions/authActions';
+import CustomButton from '../customMui/CustomButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -87,17 +87,6 @@ const Login = ({ login, alert }) => {
     setLoginOpen(false);
     setRequiredField(false);
   };
-
-  const CustomButton = withStyles(theme => ({
-    root: {
-      color: theme.palette.getContrastText('#88B4E3'),
-      margin: theme.spacing(1),
-      backgroundColor: '#88B4E3',
-      '&:hover': {
-        backgroundColor: '#6595DA'
-      }
-    }
-  }))(Button);
 
   return (
     <div className={classes.root}>

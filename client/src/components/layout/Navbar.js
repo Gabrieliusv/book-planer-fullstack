@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   AppBar,
@@ -15,9 +15,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
   appBar: {
     backgroundColor: '#2e3136'
   },
