@@ -59,7 +59,6 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     marginLeft: drawerWidth,
-    backgroundColor: '#2e3136',
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`
     }
@@ -228,7 +227,7 @@ function CustomNav({
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position='fixed' className={classes.appBar}>
+      <AppBar position='fixed' color='secondary' className={classes.appBar}>
         <Toolbar>
           <IconButton
             color='inherit'

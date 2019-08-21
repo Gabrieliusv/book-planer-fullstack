@@ -15,9 +15,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
-  appBar: {
-    backgroundColor: '#2e3136'
-  },
   title: {
     flexGrow: 1
   },
@@ -44,7 +41,7 @@ const Navbar = ({ logout }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position='static' className={classes.appBar}>
+      <AppBar color='secondary' position='static' className={classes.appBar}>
         <Toolbar>
           <Typography variant='h6' className={classes.title} noWrap>
             Book Planner
@@ -85,7 +82,9 @@ const Navbar = ({ logout }) => {
   );
 };
 
-Navbar.propTypes = {};
+Navbar.propTypes = {
+  logout: PropTypes.func.isRequired
+};
 
 export default connect(
   null,

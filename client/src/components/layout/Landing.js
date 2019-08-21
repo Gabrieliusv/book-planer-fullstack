@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Login from './Login';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Image1 from '../images/book.jpg';
 import Image2 from '../images/pc-mobile.png';
 import { connect } from 'react-redux';
@@ -46,6 +46,9 @@ const useStyles = makeStyles(theme => ({
   },
   alert: {
     margin: theme.spacing(1)
+  },
+  button: {
+    margin: theme.spacing(2)
   }
 }));
 
@@ -98,17 +101,6 @@ const Landing = ({ register, setAlert, removeAlert, isAuthenticated }) => {
   if (localStorage.token) {
     return <Redirect to='/dashboard' />;
   }
-
-  const CustomButton = withStyles(theme => ({
-    root: {
-      color: theme.palette.getContrastText('#88B4E3'),
-      margin: theme.spacing(3),
-      backgroundColor: '#88B4E3',
-      '&:hover': {
-        backgroundColor: '#6595DA'
-      }
-    }
-  }))(Button);
 
   return (
     <>
@@ -217,9 +209,14 @@ const Landing = ({ register, setAlert, removeAlert, isAuthenticated }) => {
                       </Typography>
                     )}
                   </Box>
-                  <CustomButton variant='contained' onClick={handleRegister}>
+                  <Button
+                    className={classes.button}
+                    variant='contained'
+                    color='primary'
+                    onClick={handleRegister}
+                  >
                     Sign up
-                  </CustomButton>
+                  </Button>
                 </form>
               </Box>
             </Paper>

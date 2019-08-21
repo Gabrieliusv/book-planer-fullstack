@@ -8,20 +8,17 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Snackbar
+  Snackbar,
+  Button
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../redux/actions/authActions';
-import CustomButton from '../customMui/CustomButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
-  },
-  textField: {
-    marginLeft: theme.spacing(1)
   },
   form: {
     margin: 0,
@@ -49,6 +46,9 @@ const useStyles = makeStyles(theme => ({
   },
   marginLeft: {
     marginLeft: theme.spacing(1)
+  },
+  button: {
+    margin: theme.spacing(1)
   }
 }));
 
@@ -100,7 +100,7 @@ const Login = ({ login, alert }) => {
               error={requiredField === true}
               id='login-email'
               label='Email'
-              className={classes.textField}
+              className={classes.marginLeft}
               margin='dense'
               type='email'
               name='email'
@@ -113,7 +113,7 @@ const Login = ({ login, alert }) => {
               error={requiredField === true}
               id='login-password'
               label='Password'
-              className={classes.textField}
+              className={classes.marginLeft}
               type='password'
               name='password'
               value={password}
@@ -122,9 +122,14 @@ const Login = ({ login, alert }) => {
               margin='dense'
               variant='outlined'
             />
-            <CustomButton variant='contained' onClick={handleLogin}>
+            <Button
+              className={classes.button}
+              variant='contained'
+              color='primary'
+              onClick={handleLogin}
+            >
               Log In
-            </CustomButton>
+            </Button>
             {alert !== false && (
               <Snackbar
                 open={alert !== false}
@@ -137,13 +142,14 @@ const Login = ({ login, alert }) => {
               />
             )}
           </form>
-          <CustomButton
+          <Button
             className={classes.mobile}
             variant='contained'
+            color='primary'
             onClick={handleLoginOpen}
           >
             Log In
-          </CustomButton>
+          </Button>
         </Toolbar>
         <Dialog
           open={loginOpen}
@@ -191,12 +197,22 @@ const Login = ({ login, alert }) => {
             )}
           </DialogContent>
           <DialogActions>
-            <CustomButton variant='contained' onClick={handleClose}>
+            <Button
+              className={classes.button}
+              variant='contained'
+              color='primary'
+              onClick={handleClose}
+            >
               Cancel
-            </CustomButton>
-            <CustomButton variant='contained' onClick={handleLogin}>
+            </Button>
+            <Button
+              className={classes.button}
+              variant='contained'
+              color='primary'
+              onClick={handleLogin}
+            >
               Log In
-            </CustomButton>
+            </Button>
           </DialogActions>
         </Dialog>
       </AppBar>
