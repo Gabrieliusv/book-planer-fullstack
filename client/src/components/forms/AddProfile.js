@@ -7,7 +7,7 @@ import { createProfile } from '../../redux/actions/profileActions';
 
 const useStyles = makeStyles(theme => ({
   profilePaper: {
-    maxWidth: '500px',
+    maxWidth: '600px',
     minHeight: '140px',
     marginTop: theme.spacing(2),
     display: 'flex',
