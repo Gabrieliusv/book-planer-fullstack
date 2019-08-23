@@ -43,6 +43,7 @@ const AddProfile = ({ toggleCreate, createProfile }) => {
 
   const handleCreate = () => {
     createProfile(formData);
+    toggleCreate();
   };
 
   return (

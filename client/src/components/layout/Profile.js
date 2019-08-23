@@ -7,7 +7,8 @@ import CustomProgress from '../customMui/CustomProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Paper, Button } from '@material-ui/core';
 import AccountBox from '@material-ui/icons/AccountBox';
-import AddProfile from '../forms/AddProfile';
+import AddProfile from '../profile/AddProfile';
+import ProfileDisplay from '../profile/ProfileDisplay';
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -45,6 +46,7 @@ const Profile = ({
 }) => {
   const classes = useStyles();
   const [createProfile, setCreateProfile] = useState(false);
+  const [editProfile, setEditProfile] = useState(false);
 
   useEffect(() => {
     if (!auth.loading) {
@@ -54,6 +56,10 @@ const Profile = ({
 
   const toggleCreate = () => {
     setCreateProfile(!createProfile);
+  };
+
+  const toggleEdit = () => {
+    setEditProfile(!editProfile);
   };
 
   return (
@@ -82,10 +88,26 @@ const Profile = ({
           <Grid item className={classes.form}>
             <AddProfile toggleCreate={toggleCreate} />
           </Grid>
+        ) : profile === null ? (
+          <Grid item>
+            <Paper elevation={5} className={classes.profilePaper}>
+              <AccountBox className={classes.icon} />
+              <Typography align='center' variant='subtitle2'>
+                You have not yet setup a profile
+              </Typography>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={toggleCreate}
+              >
+                Create a profile
+              </Button>
+            </Paper>
+          </Grid>
         ) : (
-          <>
-            <p>profile</p>
-          </>
+          <Grid item>
+            <ProfileDisplay toggleEdit={toggleEdit} />
+          </Grid>
         )}
       </Grid>
     </>

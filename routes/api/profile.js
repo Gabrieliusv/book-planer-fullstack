@@ -29,7 +29,7 @@ router.get('/me', auth, async (req, res) => {
 //@route POST api/profile
 //@desc Create or update user profile
 //@access Private
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { location, bio, youtube, twitter, facebook, instagram } = req.body;
 
   // Build Profile object
@@ -38,11 +38,12 @@ router.post('/', async (req, res) => {
   if (bio) profileFields.bio = bio;
   if (location) profileFields.location = location;
 
-  profileFields.social = {};
-  if (youtube) profileFields.social.youtube = youtube;
-  if (twitter) profileFields.social.twitter = twitter;
-  if (facebook) profileFields.social.facebook = facebook;
-  if (instagram) profileFields.social.instagram = instagram;
+  profileFields.social = [];
+  if (youtube) profileFields.social.push({ name: 'Youtube', link: youtube });
+  if (twitter) profileFields.social.push({ name: 'Twitter', link: twitter });
+  if (facebook) profileFields.social.push({ name: 'Facebook', link: facebook });
+  if (instagram)
+    profileFields.social.push({ name: 'Instagram', link: instagram });
 
   try {
     let profile = await Profile.findOne({ user: req.user.id });

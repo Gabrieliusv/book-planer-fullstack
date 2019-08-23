@@ -11,20 +11,12 @@ const ProfileSchema = new mongoose.Schema({
   bio: {
     type: String
   },
-  social: {
-    youtube: {
-      type: String
-    },
-    twitter: {
-      type: String
-    },
-    facebook: {
-      type: String
-    },
-    instagram: {
-      type: String
+  social: [
+    {
+      name: { type: String },
+      link: { type: String }
     }
-  },
+  ],
   date: {
     type: Date,
     default: Date.now

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Landing from './components/layout/Landing';
 import CustomNav from './components/app/CustomNav';
+import Profile from './components/layout/Profile';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import { loadUser, noToken } from './redux/actions/authActions';
@@ -19,9 +20,10 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Route exact path='/' component={Landing} />
         <Switch>
+          <Route exact path='/' component={Landing} />
           <PrivateRoute exact path='/dashboard' component={CustomNav} />
+          <PrivateRoute exact path='/profile' component={Profile} />
         </Switch>
       </Router>
     </Provider>
