@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Navbar from './Navbar';
 import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../redux/actions/profileActions';
+import { profileNav } from '../../redux/actions/navigationActions';
 import CustomProgress from '../customMui/CustomProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Paper, Button } from '@material-ui/core';
 import AccountBox from '@material-ui/icons/AccountBox';
 import AddProfile from '../profile/AddProfile';
 import ProfileDisplay from '../profile/ProfileDisplay';
+import EditProfile from '../profile/EditProfile';
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -42,25 +44,17 @@ const useStyles = makeStyles(theme => ({
 const Profile = ({
   getCurrentProfile,
   profile: { profile, loading },
-  auth
+  auth,
+  navigation,
+  profileNav
 }) => {
   const classes = useStyles();
-  const [createProfile, setCreateProfile] = useState(false);
-  const [editProfile, setEditProfile] = useState(false);
 
   useEffect(() => {
     if (!auth.loading) {
       getCurrentProfile();
     }
   }, [auth.loading, getCurrentProfile]);
-
-  const toggleCreate = () => {
-    setCreateProfile(!createProfile);
-  };
-
-  const toggleEdit = () => {
-    setEditProfile(!editProfile);
-  };
 
   return (
     <>
@@ -74,39 +68,31 @@ const Profile = ({
         </Grid>
         {loading ? (
           <CustomProgress />
-        ) : profile === null && !createProfile ? (
+        ) : profile === null && navigation === 'display' ? (
           <Paper elevation={5} className={classes.profilePaper}>
             <AccountBox className={classes.icon} />
             <Typography align='center' variant='subtitle2'>
               You have not yet setup a profile
             </Typography>
-            <Button variant='contained' color='primary' onClick={toggleCreate}>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={() => profileNav('addProfile')}
+            >
               Create a profile
             </Button>
           </Paper>
-        ) : createProfile ? (
+        ) : navigation === 'addProfile' ? (
           <Grid item className={classes.form}>
-            <AddProfile toggleCreate={toggleCreate} />
+            <AddProfile />
           </Grid>
-        ) : profile === null ? (
+        ) : navigation === 'editProfile' ? (
           <Grid item>
-            <Paper elevation={5} className={classes.profilePaper}>
-              <AccountBox className={classes.icon} />
-              <Typography align='center' variant='subtitle2'>
-                You have not yet setup a profile
-              </Typography>
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={toggleCreate}
-              >
-                Create a profile
-              </Button>
-            </Paper>
+            <EditProfile />
           </Grid>
         ) : (
           <Grid item>
-            <ProfileDisplay toggleEdit={toggleEdit} />
+            <ProfileDisplay />
           </Grid>
         )}
       </Grid>
@@ -122,10 +108,11 @@ Profile.propTypes = {
 
 const mapStateToProps = state => ({
   profile: state.profile,
-  auth: state.auth
+  auth: state.auth,
+  navigation: state.navigation.profileNav
 });
 
 export default connect(
   mapStateToProps,
-  { getCurrentProfile }
+  { getCurrentProfile, profileNav }
 )(Profile);

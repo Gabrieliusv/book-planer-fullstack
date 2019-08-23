@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Typography, Paper, TextField, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { createProfile } from '../../redux/actions/profileActions';
+import { profileNav } from '../../redux/actions/navigationActions';
 
 const useStyles = makeStyles(theme => ({
   profilePaper: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddProfile = ({ toggleCreate, createProfile }) => {
+const AddProfile = ({ profileNav, createProfile }) => {
   const classes = useStyles();
   const [formData, setFormData] = useState({
     location: '',
@@ -43,7 +44,7 @@ const AddProfile = ({ toggleCreate, createProfile }) => {
 
   const handleCreate = () => {
     createProfile(formData);
-    toggleCreate();
+    profileNav('display');
   };
 
   return (
@@ -129,7 +130,7 @@ const AddProfile = ({ toggleCreate, createProfile }) => {
           className={classes.spacing}
           color='primary'
           variant='contained'
-          onClick={toggleCreate}
+          onClick={() => profileNav('display')}
         >
           Go Back
         </Button>
@@ -144,5 +145,5 @@ AddProfile.propTypes = {
 
 export default connect(
   null,
-  { createProfile }
+  { createProfile, profileNav }
 )(AddProfile);

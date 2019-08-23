@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Paper, Box, Button, Container } from '@material-ui/core';
+import { Typography, Paper, Box, Button } from '@material-ui/core';
 import AccountBox from '@material-ui/icons/AccountBox';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+import { profileNav } from '../../redux/actions/navigationActions';
 
 const useStyles = makeStyles(theme => ({
   profilePaper: {
@@ -18,9 +19,6 @@ const useStyles = makeStyles(theme => ({
       flexDirection: 'column',
       alignItems: 'center'
     }
-  },
-  spacing: {
-    margin: theme.spacing(1)
   },
   marginTop: {
     marginTop: theme.spacing(1)
@@ -46,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ProfileDisplay = ({ profile, toggleEdit }) => {
+const ProfileDisplay = ({ profile, profileNav }) => {
   const classes = useStyles();
 
   return (
@@ -55,7 +53,11 @@ const ProfileDisplay = ({ profile, toggleEdit }) => {
         <Box className={classes.accountBox}>
           <AccountBox className={classes.icon} />
           <Box>
-            <Button variant='contained' color='primary' onClick={toggleEdit}>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={() => profileNav('editProfile')}
+            >
               Edit profile
             </Button>
           </Box>
@@ -75,26 +77,41 @@ const ProfileDisplay = ({ profile, toggleEdit }) => {
               <Typography variant='body1'>{profile.location}</Typography>
             </>
           )}
-          {profile.social.length > 0 && (
+          {profile.social && (
             <Typography className={classes.marginTop} variant='h6'>
               Social links
             </Typography>
           )}
-          {profile.social.length > 0 &&
-            profile.social.map(i => (
-              <>
-                <Typography key={i.name} variant='body1'>
-                  {i.link}
-                </Typography>
-              </>
-            ))}
+          {profile.social.youtube && (
+            <Typography variant='body1' className={classes.marginTop}>
+              {profile.social.youtube}
+            </Typography>
+          )}
+          {profile.social.twitter && (
+            <Typography variant='body1' className={classes.marginTop}>
+              {profile.social.twitter}
+            </Typography>
+          )}
+          {profile.social.facebook && (
+            <Typography variant='body1' className={classes.marginTop}>
+              {profile.social.facebook}
+            </Typography>
+          )}
+          {profile.social.instagram && (
+            <Typography variant='body1' className={classes.marginTop}>
+              {profile.social.instagram}
+            </Typography>
+          )}
         </Box>
       </Paper>
     </>
   );
 };
 
-ProfileDisplay.propTypes = {};
+ProfileDisplay.propTypes = {
+  profile: PropTypes.object.isRequired,
+  profileNav: PropTypes.func.isRequired
+};
 
 const mapStateToProps = state => ({
   profile: state.profile.profile
@@ -102,5 +119,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  { profileNav }
 )(ProfileDisplay);
