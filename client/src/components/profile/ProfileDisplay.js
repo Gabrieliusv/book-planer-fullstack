@@ -9,7 +9,6 @@ import { profileNav } from '../../redux/actions/navigationActions';
 const useStyles = makeStyles(theme => ({
   profilePaper: {
     maxWidth: '600px',
-    minWidth: '60vw',
     marginTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'row',
@@ -17,7 +16,8 @@ const useStyles = makeStyles(theme => ({
     padding: 15,
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
-      alignItems: 'center'
+      alignItems: 'center',
+      minWidth: '60vw'
     }
   },
   marginTop: {

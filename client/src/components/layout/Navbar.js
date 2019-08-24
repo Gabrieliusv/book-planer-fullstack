@@ -72,7 +72,6 @@ const Navbar = ({ logout }) => {
                 Profile
               </Link>
             </MenuItem>
-            <MenuItem>My account</MenuItem>
             <MenuItem>Discussions</MenuItem>
             <MenuItem onClick={logout}>Logout</MenuItem>
           </Menu>

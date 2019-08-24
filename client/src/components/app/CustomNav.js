@@ -262,7 +262,6 @@ function CustomNav({
                 Profile
               </Link>
             </MenuItem>
-            <MenuItem onClick={handleProfileClose}>My account</MenuItem>
             <MenuItem onClick={handleProfileClose}>Discussions</MenuItem>
             <MenuItem onClick={logout}>Logout</MenuItem>
           </Menu>

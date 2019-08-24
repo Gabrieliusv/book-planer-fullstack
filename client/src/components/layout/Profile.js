@@ -51,6 +51,7 @@ const Profile = ({
   const classes = useStyles();
 
   useEffect(() => {
+    profileNav('display');
     if (!auth.loading) {
       getCurrentProfile();
     }
