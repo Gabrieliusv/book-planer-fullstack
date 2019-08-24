@@ -22,8 +22,20 @@ const useStyles = makeStyles(theme => ({
     marginTop: 35
   },
   link: {
+    margin: 0,
     textDecoration: 'none',
-    color: '#000'
+    color: '#000',
+    width: '100%',
+    padding: '12px 16px',
+    fontWeight: 500
+  },
+  menuItem: {
+    padding: 0,
+    minHeight: 0
+  },
+  logout: {
+    fontWeight: 500,
+    color: '#6595DA'
   }
 }));
 
@@ -62,18 +74,19 @@ const Navbar = ({ logout }) => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem>
+            <MenuItem className={classes.menuItem}>
               <Link className={classes.link} to='/dashboard'>
-                Book Planner
+                Book planner
               </Link>
             </MenuItem>
-            <MenuItem>
+            <MenuItem className={classes.menuItem}>
               <Link className={classes.link} to='/profile'>
                 Profile
               </Link>
             </MenuItem>
-            <MenuItem>Discussions</MenuItem>
-            <MenuItem onClick={logout}>Logout</MenuItem>
+            <MenuItem className={classes.logout} onClick={logout}>
+              Logout
+            </MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>

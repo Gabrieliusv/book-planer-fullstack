@@ -55,7 +55,7 @@ const Profile = ({
     if (!auth.loading) {
       getCurrentProfile();
     }
-  }, [auth.loading, getCurrentProfile]);
+  }, [auth.loading, getCurrentProfile, profileNav]);
 
   return (
     <>
@@ -104,7 +104,9 @@ const Profile = ({
 Profile.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired,
+  profileNav: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
