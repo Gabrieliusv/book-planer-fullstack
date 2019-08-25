@@ -33,7 +33,7 @@ import { logout } from '../../redux/actions/authActions';
 import { Link } from 'react-router-dom';
 import {
   getCharacters,
-  deleteCharacter
+  characterToTrash
 } from '../../redux/actions/characterActions';
 import {
   toggleAddCharacter,
@@ -126,7 +126,7 @@ function CustomNav({
   container,
   toggleAddCharacter,
   toggleTrash,
-  deleteCharacter,
+  characterToTrash,
   getCharacters,
   openDeleteNotification,
   openEditCharacter,
@@ -157,7 +157,7 @@ function CustomNav({
   };
 
   const handleDelete = (i, index) => {
-    deleteCharacter(i._id);
+    characterToTrash(i._id);
     const a = { open: true, char: i, index: index };
     openDeleteNotification(a);
   };
@@ -332,7 +332,7 @@ function CustomNav({
 
 CustomNav.propTypes = {
   getCharacters: PropTypes.func.isRequired,
-  deleteCharacter: PropTypes.func.isRequired,
+  characterToTrash: PropTypes.func.isRequired,
   toggleAddCharacter: PropTypes.func.isRequired,
   toggleTrash: PropTypes.func.isRequired,
   characters: PropTypes.object.isRequired,
@@ -355,7 +355,7 @@ export default connect(
   mapStateToProps,
   {
     getCharacters,
-    deleteCharacter,
+    characterToTrash,
     toggleAddCharacter,
     toggleTrash,
     openDeleteNotification,

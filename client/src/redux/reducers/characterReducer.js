@@ -3,7 +3,7 @@ import {
   GET_CHARACTERS,
   CHARACTER_ERROR,
   ADD_CHARACTER,
-  DELETE_CHARACTER,
+  CHARACTER_TO_TRASH,
   DELETE_TRASH,
   RESTORE_CHARACTER,
   RESTORE_CHARACTER_AT_INDEX,
@@ -24,7 +24,8 @@ export default function(state = initialState, action) {
     case GET_CHARACTERS:
       return {
         ...state,
-        charactersInfo: payload,
+        charactersInfo: payload.filter(char => char.inTrash === false),
+        inTrash: payload.filter(char => char.inTrash === true),
         loading: false
       };
     case CHARACTERS_LOADING:
@@ -38,7 +39,7 @@ export default function(state = initialState, action) {
         error: payload,
         loading: false
       };
-    case DELETE_CHARACTER:
+    case CHARACTER_TO_TRASH:
       return {
         ...state,
         charactersInfo: state.charactersInfo.filter(i => i._id !== payload),
