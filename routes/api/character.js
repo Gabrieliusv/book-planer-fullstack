@@ -143,7 +143,7 @@ router.patch(
 //@desc Delete a character
 //@access Private
 router.delete(
-  '/',
+  '/delete',
   auth,
   [
     check('id', 'Character id is required')
