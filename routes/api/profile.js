@@ -35,14 +35,24 @@ router.post('/', auth, async (req, res) => {
   // Build Profile object
   const profileFields = {};
   profileFields.user = req.user.id;
-  if (bio) profileFields.bio = bio;
-  if (location) profileFields.location = location;
+  bio ? (profileFields.bio = bio) : (profileFields.bio = null);
+  location
+    ? (profileFields.location = location)
+    : (profileFields.location = null);
 
   profileFields.social = {};
-  if (youtube) profileFields.social.youtube = youtube;
-  if (twitter) profileFields.social.twitter = twitter;
-  if (facebook) profileFields.social.facebook = facebook;
-  if (instagram) profileFields.social.instagram = instagram;
+  youtube
+    ? (profileFields.social.youtube = youtube)
+    : (profileFields.social.youtube = null);
+  twitter
+    ? (profileFields.social.twitter = twitter)
+    : (profileFields.social.twitter = null);
+  facebook
+    ? (profileFields.social.facebook = facebook)
+    : (profileFields.social.facebook = null);
+  instagram
+    ? (profileFields.social.instagram = instagram)
+    : (profileFields.social.instagram = null);
 
   try {
     let profile = await Profile.findOne({ user: req.user.id });
@@ -52,7 +62,7 @@ router.post('/', auth, async (req, res) => {
       profile = await Profile.findOneAndUpdate(
         { user: req.user.id },
         { $set: profileFields },
-        { new: true }
+        { new: true, upsert: true }
       );
 
       return res.json(profile);
@@ -65,7 +75,7 @@ router.post('/', auth, async (req, res) => {
     res.json(profile);
   } catch (err) {
     console.error(err.message);
-    res.sratus(500).send('server Error');
+    res.status(500).send('server Error');
   }
 });
 

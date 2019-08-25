@@ -9,6 +9,7 @@ import { profileNav } from '../../redux/actions/navigationActions';
 const useStyles = makeStyles(theme => ({
   profilePaper: {
     maxWidth: '600px',
+    minHeight: '230px',
     marginTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'row',
@@ -63,11 +64,9 @@ const ProfileDisplay = ({ profile, profileNav }) => {
           </Box>
         </Box>
         <Box m={2} className={classes.about}>
+          <Typography variant='h6'>About me</Typography>
           {profile.bio && (
-            <>
-              <Typography variant='h6'>About me</Typography>
-              <Typography variant='body1'>{profile.bio}</Typography>
-            </>
+            <Typography variant='body1'>{profile.bio}</Typography>
           )}
           {profile.location && (
             <>
@@ -77,11 +76,14 @@ const ProfileDisplay = ({ profile, profileNav }) => {
               <Typography variant='body1'>{profile.location}</Typography>
             </>
           )}
-          {profile.social && (
+          {profile.social.youtube ||
+          profile.social.twitter ||
+          profile.social.facebook ||
+          profile.social.instagram ? (
             <Typography className={classes.marginTop} variant='h6'>
               Social links
             </Typography>
-          )}
+          ) : null}
           {profile.social.youtube && (
             <Typography variant='body1' className={classes.marginTop}>
               {profile.social.youtube}

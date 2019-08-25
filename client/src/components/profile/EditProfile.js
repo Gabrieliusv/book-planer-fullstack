@@ -72,19 +72,24 @@ const EditProfile = ({
     setFormData({
       location: !profile.location ? '' : profile.location,
       bio: !profile.bio ? '' : profile.bio,
-      youtube: !profile.social.youtube ? '' : profile.social.youtube,
-      twitter: !profile.social.twitter ? '' : profile.social.twitter,
-      facebook: !profile.social.facebook ? '' : profile.social.facebook,
-      instagram: !profile.social.instagram ? '' : profile.social.instagram
+      youtube:
+        !profile.social || !profile.social.youtube
+          ? ''
+          : profile.social.youtube,
+      twitter:
+        !profile.social || !profile.social.twitter
+          ? ''
+          : profile.social.twitter,
+      facebook:
+        !profile.social || !profile.social.facebook
+          ? ''
+          : profile.social.facebook,
+      instagram:
+        !profile.social || !profile.social.instagram
+          ? ''
+          : profile.social.instagram
     });
-  }, [
-    profile.location,
-    profile.bio,
-    profile.social.youtube,
-    profile.social.twitter,
-    profile.social.facebook,
-    profile.social.instagram
-  ]);
+  }, [profile.social, profile.location, profile.bio]);
 
   const handleChange = e => {
     setFormData({

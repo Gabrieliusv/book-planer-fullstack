@@ -51,8 +51,8 @@ const Profile = ({
   const classes = useStyles();
 
   useEffect(() => {
-    profileNav('display');
     if (!auth.loading) {
+      profileNav('display');
       getCurrentProfile();
     }
   }, [auth.loading, getCurrentProfile, profileNav]);
@@ -105,7 +105,7 @@ Profile.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired,
+  navigation: PropTypes.string.isRequired,
   profileNav: PropTypes.func.isRequired
 };
 
