@@ -141,9 +141,11 @@ function CustomNav({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  /*useEffect(() => {
-    getCharacters();
-  }, [getCharacters]);*/
+  useEffect(() => {
+    if (isAuthenticated) {
+      getCharacters();
+    }
+  }, [getCharacters, isAuthenticated]);
 
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);

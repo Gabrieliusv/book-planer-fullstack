@@ -8,7 +8,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  CLEAR_PROFILE
+  CLEAR_PROFILE,
+  CLEAR_CHARACTERS
 } from './types';
 import { setAlert, setLoginAlert, removeAlert } from './alertActions';
 import setAuthToken from '../../utils/setAuthToken';
@@ -114,6 +115,9 @@ export const logout = () => dispatch => {
   localStorage.removeItem('token');
   dispatch({
     type: CLEAR_PROFILE
+  });
+  dispatch({
+    type: CLEAR_CHARACTERS
   });
   dispatch({
     type: LOGOUT

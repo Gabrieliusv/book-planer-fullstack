@@ -1,26 +1,30 @@
 import {
   CHARACTERS_LOADING,
   GET_CHARACTERS,
+  CHARACTER_ERROR,
   ADD_CHARACTER,
   DELETE_CHARACTER,
   DELETE_TRASH,
   RESTORE_CHARACTER,
   RESTORE_CHARACTER_AT_INDEX,
-  EDIT_CHARACTER
+  EDIT_CHARACTER,
+  CLEAR_CHARACTERS
 } from '../actions/types';
 
 const initialState = {
   charactersInfo: [],
   inTrash: [],
-  loading: false
+  loading: true,
+  error: {}
 };
 
 export default function(state = initialState, action) {
-  switch (action.type) {
+  const { payload, type, index } = action;
+  switch (type) {
     case GET_CHARACTERS:
       return {
         ...state,
-        charactersInfo: action.payload,
+        charactersInfo: payload,
         loading: false
       };
     case CHARACTERS_LOADING:
@@ -28,47 +32,59 @@ export default function(state = initialState, action) {
         ...state,
         loading: true
       };
+    case CHARACTER_ERROR:
+      return {
+        ...state,
+        error: payload,
+        loading: false
+      };
     case DELETE_CHARACTER:
       return {
         ...state,
-        charactersInfo: state.charactersInfo.filter(
-          i => i._id !== action.payload
-        ),
+        charactersInfo: state.charactersInfo.filter(i => i._id !== payload),
         inTrash: [
           ...state.inTrash,
-          state.charactersInfo.find(i => i._id === action.payload)
+          state.charactersInfo.find(i => i._id === payload)
         ]
       };
     case ADD_CHARACTER:
       return {
         ...state,
-        charactersInfo: [...state.charactersInfo, action.payload]
+        charactersInfo: [...state.charactersInfo, payload]
       };
     case DELETE_TRASH:
       return {
         ...state,
-        inTrash: state.inTrash.filter(a => action.payload.every(b => a !== b))
+        inTrash: state.inTrash.filter(a => payload.every(b => a !== b))
       };
     case RESTORE_CHARACTER:
       return {
         ...state,
-        charactersInfo: [...state.charactersInfo, ...action.payload],
-        inTrash: state.inTrash.filter(a => action.payload.every(b => a !== b))
+        charactersInfo: [...state.charactersInfo, ...payload],
+        inTrash: state.inTrash.filter(a => payload.every(b => a !== b))
       };
     case RESTORE_CHARACTER_AT_INDEX:
       let newState = [...state.charactersInfo];
-      newState.splice(action.index, 0, action.payload);
+      newState.splice(index, 0, payload);
       return {
         ...state,
         charactersInfo: newState,
-        inTrash: state.inTrash.filter(a => a !== action.payload)
+        inTrash: state.inTrash.filter(a => a !== payload)
       };
     case EDIT_CHARACTER:
       let editState = [...state.charactersInfo];
-      editState.splice(action.index, 1, action.payload);
+      editState.splice(index, 1, payload);
       return {
         ...state,
         charactersInfo: editState
+      };
+    case CLEAR_CHARACTERS:
+      return {
+        ...state,
+        charactersInfo: [],
+        inTrash: [],
+        loading: true,
+        error: {}
       };
     default:
       return state;

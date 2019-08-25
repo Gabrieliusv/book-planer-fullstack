@@ -12,7 +12,7 @@ function EditCharacter(props) {
     const { editCharacterWindow } = props.navigation;
     const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
     const [requiredField, setRequiredField] = useState(false);
-    const [newChar, setNewChar] = useState('loading');
+    const [newChar, setNewChar] = useState(false);
 
     useEffect(() => {
         setNewChar(editCharacterWindow.character);
@@ -43,7 +43,7 @@ function EditCharacter(props) {
 
     return (
         <>
-            {newChar === 'loading' ? null :
+            {newChar &&
                 <Dialog
                     fullScreen={fullScreen}
                     open={editCharacterWindow.open}
