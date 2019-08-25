@@ -92,12 +92,20 @@ router.patch(
     const characterFields = {};
 
     if (name) characterFields.name = name;
-    if (live) characterFields.live = live;
-    if (born) characterFields.born = born;
-    if (philosophy) characterFields.philosophy = philosophy;
-    if (abilities) characterFields.abilities = abilities;
-    if (physicalD) characterFields.physicalD = physicalD;
-    if (characterD) characterFields.characterD = characterD;
+    live ? (characterFields.live = live) : (characterFields.live = '');
+    born ? (characterFields.born = born) : (characterFields.born = '');
+    philosophy
+      ? (characterFields.philosophy = philosophy)
+      : (characterFields.philosophy = '');
+    abilities
+      ? (characterFields.abilities = abilities)
+      : (characterFields.abilities = '');
+    physicalD
+      ? (characterFields.physicalD = physicalD)
+      : (characterFields.physicalD = '');
+    characterD
+      ? (characterFields.characterD = characterD)
+      : (characterFields.characterD = '');
 
     try {
       let character = await Character.findById(req.params.id);
