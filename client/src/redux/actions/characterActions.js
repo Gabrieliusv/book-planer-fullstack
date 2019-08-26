@@ -72,7 +72,7 @@ export const editCharacter = (character, index) => async dispatch => {
   } catch (err) {
     dispatch({
       type: CHARACTER_ERROR,
-      payload: { msg: err.response.data.errors, status: err.response.status }
+      payload: { msg: err.response.data.msg, status: err.response.status }
     });
   }
 };
@@ -94,7 +94,7 @@ export const characterToTrash = id => async dispatch => {
   } catch (err) {
     dispatch({
       type: CHARACTER_ERROR,
-      payload: { msg: err.response.data.errors, status: err.response.status }
+      payload: { msg: err.response.data.msg, status: err.response.status }
     });
   }
 };
@@ -122,24 +122,67 @@ export const deleteTrash = checked => async dispatch => {
     dispatch({
       type: CHARACTER_ERROR,
       payload: {
-        msg: err.response.data.errors,
+        msg: err.response.data.msg,
         status: err.response.status
       }
     });
   }
 };
 
-export const restoreCharacter = character => {
-  return {
-    type: RESTORE_CHARACTER,
-    payload: character
+export const restoreCharacter = character => async dispatch => {
+  let list = [];
+  character.forEach(char => list.push(char._id));
+  const body = JSON.stringify({ id: list });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
   };
+
+  try {
+    await axios.patch('/api/character/trash/manage/all', body, config);
+
+    dispatch({
+      type: RESTORE_CHARACTER,
+      payload: character
+    });
+  } catch (err) {
+    dispatch({
+      type: CHARACTER_ERROR,
+      payload: {
+        msg: err.response.data.msg,
+        status: err.response.status
+      }
+    });
+  }
 };
 
-export const restoreCharacterAtIndex = (character, index) => {
-  return {
-    type: RESTORE_CHARACTER_AT_INDEX,
-    payload: character,
-    index
+export const restoreCharacterAtIndex = (character, index) => async dispatch => {
+  let list = [character._id];
+  const body = JSON.stringify({ id: list });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
   };
+
+  try {
+    await axios.patch('/api/character/trash/manage/all', body, config);
+
+    dispatch({
+      type: RESTORE_CHARACTER_AT_INDEX,
+      payload: character,
+      index
+    });
+  } catch (err) {
+    dispatch({
+      type: CHARACTER_ERROR,
+      payload: {
+        msg: err.response.data.msg,
+        status: err.response.status
+      }
+    });
+  }
 };

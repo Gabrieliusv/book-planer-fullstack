@@ -318,13 +318,21 @@ function CustomNav({
         </Hidden>
       </nav>
       <main className={classes.content}>
-        {!addCharacterWindow ? null : <AddCharacter />}
-        {!trashWindow ? null : <Trash />}
-        {!deleteNotificationWindow.open ? null : <ConfirmDel />}
-        {!editCharacterWindow.open ? null : <EditCharacter />}
+        {!addCharacterWindow || !isAuthenticated ? null : <AddCharacter />}
+        {!trashWindow || !isAuthenticated ? null : <Trash />}
+        {!deleteNotificationWindow.open || !isAuthenticated ? null : (
+          <ConfirmDel />
+        )}
+        {!editCharacterWindow.open || !isAuthenticated ? null : (
+          <EditCharacter />
+        )}
         <div className={classes.toolbar} />
-        {characterInfoWindow === false ? null : <CharInfoDisplay />}
-        {!charactersOverviewWindow ? null : <CharactersOverview />}
+        {characterInfoWindow === false || !isAuthenticated ? null : (
+          <CharInfoDisplay />
+        )}
+        {!charactersOverviewWindow || !isAuthenticated ? null : (
+          <CharactersOverview />
+        )}
       </main>
     </div>
   );
