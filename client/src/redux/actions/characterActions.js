@@ -8,7 +8,8 @@ import {
   RESTORE_CHARACTER_AT_INDEX,
   EDIT_CHARACTER,
   CHARACTERS_LOADING,
-  CHARACTER_ERROR
+  CHARACTER_ERROR,
+  ADD_STORY
 } from './types';
 
 export const getCharacters = () => async dispatch => {
@@ -175,6 +176,30 @@ export const restoreCharacterAtIndex = (character, index) => async dispatch => {
       type: RESTORE_CHARACTER_AT_INDEX,
       payload: character,
       index
+    });
+  } catch (err) {
+    dispatch({
+      type: CHARACTER_ERROR,
+      payload: {
+        msg: err.response.data.msg,
+        status: err.response.status
+      }
+    });
+  }
+};
+
+export const addStory = (story, id) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  try {
+    const res = await axios.put(`/api/character/story/${id}`, story, config);
+
+    dispatch({
+      type: ADD_STORY,
+      payload: { id, story: res.data }
     });
   } catch (err) {
     dispatch({

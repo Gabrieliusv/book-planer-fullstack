@@ -37,16 +37,17 @@ function CharInfoDisplay(props) {
   const classes = useStyles();
   const { characterInfoWindow } = props.navigation;
   const { charactersInfo } = props.characters;
-  const [character, setCharacter] = useState('false');
+  const [character, setCharacter] = useState(false);
 
   useEffect(() => {
+    setCharacter(false);
     const info = charactersInfo.filter(i => i._id === characterInfoWindow);
     setCharacter(...info);
   }, [charactersInfo, characterInfoWindow]);
 
   return (
     <>
-      {character === 'false' ? (
+      {!character ? (
         <CustomProgress />
       ) : (
         <>

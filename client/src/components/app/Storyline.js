@@ -3,7 +3,7 @@ import { Grid, Paper, Typography, Icon, Button, Zoom, TextField, InputLabel, For
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import EditStoryline from './EditStoryline';
 import { connect } from 'react-redux';
-import { editCharacter } from '../../redux/actions/characterActions';
+import { addStory } from '../../redux/actions/characterActions';
 import { openEditStoryline } from '../../redux/actions/navigationActions'
 import PropTypes from 'prop-types';
 
@@ -57,7 +57,7 @@ function StoryLine(props) {
     const classes = useStyles();
     const { charactersInfo } = props.characters;
     const { characterInfoWindow, editStoryWindow } = props.navigation;
-    const { editCharacter, openEditStoryline } = props;
+    const { openEditStoryline, addStory } = props;
     const [addStoryline, setAddStoryline] = useState(false);
     const [requiredField, setRequiredField] = useState(false);
     const [character, setCharacter] = useState(false);
@@ -107,15 +107,12 @@ function StoryLine(props) {
     }
 
     const handleSave = () => {
-        const index = charactersInfo.indexOf(character);
         const isEmpty = Object.values(newStoryline).some(x => x === '');
-        let newCharacter = { ...character };
         if (character.story.length === 0) {
             if (isEmpty === false) {
                 const lineColor = makeColor(newStoryline.effect);
                 const newStory = { ...newStoryline, beforeColor: lineColor, color: lineColor };
-                newCharacter.story.push({ ...newStory });
-                editCharacter(newCharacter, index);
+                addStory(newStory, character._id);
                 handleCancel();
             } else { setRequiredField(newStoryline) }
         } else {
@@ -123,8 +120,7 @@ function StoryLine(props) {
                 const prevStory = character.story.length - 1;
                 const lineColor = makeColor(newStoryline.effect);
                 const newStory = { ...newStoryline, beforeColor: character.story[prevStory].color, color: lineColor };
-                newCharacter.story.push({ ...newStory });
-                editCharacter(newCharacter, index);
+                addStory(newStory, character._id);
                 handleCancel();
             } else { setRequiredField(newStoryline) }
         }
@@ -380,7 +376,7 @@ function StoryLine(props) {
 StoryLine.propTypes = {
     characters: PropTypes.object.isRequired,
     navigation: PropTypes.object.isRequired,
-    editCharacter: PropTypes.func.isRequired,
+    addStory: PropTypes.func.isRequired,
     openEditStoryline: PropTypes.func.isRequired,
 }
 
@@ -389,4 +385,4 @@ const mapStateToProps = state => ({
     navigation: state.navigation,
 })
 
-export default connect(mapStateToProps, { editCharacter, openEditStoryline })(StoryLine);
+export default connect(mapStateToProps, { addStory, openEditStoryline })(StoryLine);
