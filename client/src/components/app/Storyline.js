@@ -53,11 +53,8 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function StoryLine(props) {
+const StoryLine = ({openEditStoryline, addStory, characters: { charactersInfo}, navigation: {characterInfoWindow, editStoryWindow}}) => {
     const classes = useStyles();
-    const { charactersInfo } = props.characters;
-    const { characterInfoWindow, editStoryWindow } = props.navigation;
-    const { openEditStoryline, addStory } = props;
     const [addStoryline, setAddStoryline] = useState(false);
     const [requiredField, setRequiredField] = useState(false);
     const [character, setCharacter] = useState(false);
@@ -72,9 +69,6 @@ function StoryLine(props) {
     useEffect(() => {
         const info = charactersInfo.filter(i => i._id === characterInfoWindow);
         setCharacter(...info);
-        return () => {
-            handleCancel();
-          }
     }, [charactersInfo, characterInfoWindow])
 
     const handleStoryline = () => {
