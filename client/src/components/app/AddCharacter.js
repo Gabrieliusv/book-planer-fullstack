@@ -7,9 +7,7 @@ import { toggleAddCharacter } from '../../redux/actions/navigationActions'
 import { useTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
-function AddCharacter(props) {
-    const { toggleAddCharacter, addCharacter } = props;
-    const { addCharacterWindow } = props.navigation;
+function AddCharacter({ toggleAddCharacter, addCharacter, navigation:{addCharacterWindow}}) {
     const theme = useTheme();
     const [requiredField, setRequiredField] = useState(false);
     const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));

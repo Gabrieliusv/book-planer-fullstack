@@ -16,14 +16,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function ConfirmDel(props) {
+function ConfirmDel({
+  closeDeleteNotification,
+  restoreCharacterAtIndex,
+  closeCharacter,
+  navigation: { deleteNotificationWindow }
+}) {
   const classes = useStyles();
-  const {
-    closeDeleteNotification,
-    restoreCharacterAtIndex,
-    closeCharacter
-  } = props;
-  const { deleteNotificationWindow } = props.navigation;
 
   useEffect(() => {
     closeCharacter();

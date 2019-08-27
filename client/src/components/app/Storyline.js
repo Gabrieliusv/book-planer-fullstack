@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Paper, Typography, Icon, Button, Zoom, TextField, InputLabel, FormHelperText, FormControl, Select, Input, MenuItem, CircularProgress, Box } from '@material-ui/core';
+import { Grid, Paper, Typography, Icon, Button, Zoom, TextField, InputLabel, FormHelperText, FormControl, Select, Input, MenuItem, Box } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import RoundButton from '../customMui/RoundButton';
+import CustomProgress from '../customMui/CustomProgress';
 import EditStoryline from './EditStoryline';
 import { connect } from 'react-redux';
 import { addStory } from '../../redux/actions/characterActions';
@@ -131,46 +133,6 @@ const StoryLine = ({openEditStoryline, addStory, characters: { charactersInfo}, 
         const index = charactersInfo.indexOf(character);
         openEditStoryline(character, index)
     }
-
-    const EditButton = withStyles(theme => ({
-        root: {
-            color: theme.palette.getContrastText('#88B4E3'),
-            backgroundColor: '#88B4E3',
-            borderRadius: '50%',
-            height: '60px',
-            margin: theme.spacing(2),
-            '&:hover': {
-                backgroundColor: '#6595DA',
-            },
-        },
-    }))(Button);
-
-    const CustomButton = withStyles(theme => ({
-        root: {
-            color: theme.palette.getContrastText('#88B4E3'),
-            backgroundColor: '#88B4E3',
-            '&:hover': {
-                backgroundColor: '#6595DA',
-            },
-        },
-    }))(Button);
-
-    const TimelineButton = withStyles(theme => ({
-        root: {
-            color: theme.palette.getContrastText('#88B4E3'),
-            height: '35px',
-            backgroundColor: '#88B4E3',
-            '&:hover': {
-                backgroundColor: '#6595DA',
-            },
-        },
-    }))(Button);
-
-    const CustomProgress = withStyles({
-        root: {
-            color: '#ACC8EA',
-        },
-    })(CircularProgress);
 
     return (
         <>
@@ -337,28 +299,28 @@ const StoryLine = ({openEditStoryline, addStory, characters: { charactersInfo}, 
                             </Zoom>
                     }
                     {addStoryline === false && character.story.length === 0 ?
-                        <EditButton variant="contained" aria-label="Add" onClick={handleStoryline}>
+                        <RoundButton variant="contained"  color="primary" aria-label="Add" onClick={handleStoryline}>
                             <Icon>edit_icon</Icon>
-                        </EditButton>
+                        </RoundButton>
                         : addStoryline === false && character.story.length >= 1 && editStoryWindow.open === false ?
                             <Grid container direction="row" justify="center" alignItems="center">
-                                <EditButton variant="contained" aria-label="Add" onClick={handleStoryline}>
+                                <RoundButton variant="contained" color="primary" aria-label="Add" onClick={handleStoryline}>
                                     <Icon>edit_icon</Icon>
-                                </EditButton>
-                                <TimelineButton variant="contained" onClick={handleEditStoryline}>
+                                </RoundButton>
+                                <Button variant="contained" color="primary" onClick={handleEditStoryline}>
                                     Edit Storyline
-                             </TimelineButton>
+                                </Button>
                             </Grid>
                             : editStoryWindow.open === true ?
                                 <EditStoryline />
                                 :
                                 <Grid container direction="row" justify="center">
-                                    <CustomButton variant="contained" onClick={handleSave} className={classes.margin}>
+                                    <Button variant="contained" color="primary" onClick={handleSave} className={classes.margin}>
                                         Save
-                         </CustomButton>
-                                    <CustomButton variant="contained" onClick={handleCancel} className={classes.margin}>
+                                    </Button>
+                                    <Button variant="contained" color="primary" onClick={handleCancel} className={classes.margin}>
                                         Cancel
-                         </CustomButton>
+                                    </Button>
                                 </Grid>
                     }
                 </>

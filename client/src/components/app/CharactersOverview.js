@@ -1,33 +1,26 @@
 import React from 'react';
 import { Grid, Typography, Button } from '@material-ui/core';
 import { Line } from 'react-chartjs-2';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { openCharacter } from '../../redux/actions/navigationActions';
 import PropTypes from 'prop-types';
+import CustomProgress from '../customMui/CustomProgress';
 
 const useStyles = makeStyles(theme => ({
   chartHeight: {
     height: '35vh'
+  },
+  button: {
+    margin: theme.spacing(1)
   }
 }));
 
-function CharactersOverview(props) {
-  const { openCharacter } = props;
-  const { charactersInfo } = props.characters;
-
+function CharactersOverview({
+  openCharacter,
+  characters: { charactersInfo, loading }
+}) {
   const classes = useStyles();
-
-  const CustomButton = withStyles(theme => ({
-    root: {
-      marginTop: theme.spacing(1),
-      color: theme.palette.getContrastText('#88B4E3'),
-      backgroundColor: '#88B4E3',
-      '&:hover': {
-        backgroundColor: '#6595DA'
-      }
-    }
-  }))(Button);
 
   const storylineChart = storyline => {
     const chartOptions = {
@@ -106,7 +99,9 @@ function CharactersOverview(props) {
 
   return (
     <>
-      {charactersInfo.length === 0 ? (
+      {loading ? (
+        <CustomProgress />
+      ) : charactersInfo.length === 0 ? (
         <Typography variant='h6' align='center'>
           Start planing your book by creating its characters, and story lines!
         </Typography>
@@ -116,12 +111,14 @@ function CharactersOverview(props) {
             <Grid item xs={12} key={i._id} align='center'>
               <Typography variant='h6'> {i.name} </Typography>
               {i.story.length === 0 ? (
-                <CustomButton
+                <Button
+                  className={classes.button}
                   variant='contained'
+                  color='primary'
                   onClick={() => openCharacter(i._id)}
                 >
                   Create Storyline
-                </CustomButton>
+                </Button>
               ) : (
                 storylineChart(i.story)
               )}

@@ -3,8 +3,8 @@ import { Button } from '@material-ui/core';
 
 const BlueButton = withStyles(theme => ({
   root: {
-    color: '#3697b0',
-    borderColor: '#3697b0',
+    color: '#6595DA',
+    borderColor: '#6595DA',
     '&:hover': {
       backgroundColor: '#E7F0F9'
     }

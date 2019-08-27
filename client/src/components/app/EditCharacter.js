@@ -7,10 +7,8 @@ import { editCharacter } from '../../redux/actions/characterActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-function EditCharacter(props) {
+function EditCharacter({closeEditCharacter, editCharacter, navigation:{editCharacterWindow}}) {
     const theme = useTheme();
-    const { closeEditCharacter, editCharacter } = props;
-    const { editCharacterWindow } = props.navigation;
     const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
     const [requiredField, setRequiredField] = useState(false);
     const [newChar, setNewChar] = useState(false);

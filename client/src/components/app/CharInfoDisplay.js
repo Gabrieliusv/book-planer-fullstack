@@ -33,10 +33,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function CharInfoDisplay(props) {
+function CharInfoDisplay({
+  navigation: { characterInfoWindow },
+  characters: { charactersInfo }
+}) {
   const classes = useStyles();
-  const { characterInfoWindow } = props.navigation;
-  const { charactersInfo } = props.characters;
   const [character, setCharacter] = useState(false);
 
   useEffect(() => {
