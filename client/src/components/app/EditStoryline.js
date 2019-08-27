@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Grid, Button, Zoom, TextField, InputLabel, FormHelperText, FormControl, Select, Input, MenuItem } from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { closeEditStoryline } from '../../redux/actions/navigationActions';
@@ -27,10 +27,8 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function EditStoryline(props) {
-    const { editStoryWindow } = props.navigation;
-    const { character } = props.navigation.editStoryWindow;
-    const { closeEditStoryline, editStory } = props;
+function EditStoryline({closeEditStoryline, editStory, navigation:{editStoryWindow}}) {
+    const { character } = editStoryWindow;
     const classes = useStyles();
     const [selectedStory, setSelectedStory] = useState({ index: '' });
     const [requiredFields, setRequiredFields] = useState(false);
@@ -106,16 +104,6 @@ function EditStoryline(props) {
         })
     }
 
-    const CustomButton = withStyles(theme => ({
-        root: {
-            color: theme.palette.getContrastText('#88B4E3'),
-            backgroundColor: '#88B4E3',
-            '&:hover': {
-                backgroundColor: '#6595DA',
-            },
-        },
-    }))(Button);
-
     return (
         <>
             {story === false ?
@@ -137,12 +125,12 @@ function EditStoryline(props) {
                             <FormHelperText>Choose a story you want to edit</FormHelperText>
                         </FormControl>
                         <Grid container direction="row" justify="center" className={classes.buttons}>
-                            <CustomButton variant="contained" onClick={handleEdit} className={classes.margin}>
+                            <Button variant="contained" color="primary" onClick={handleEdit} className={classes.margin}>
                                 Edit
-                    </CustomButton>
-                            <CustomButton variant="contained" onClick={closeEditStoryline} className={classes.margin}>
+                    </Button>
+                            <Button variant="contained" color="primary" onClick={closeEditStoryline} className={classes.margin}>
                                 Cancel
-                    </CustomButton>
+                    </Button>
                         </Grid>
                     </div>
                 </Zoom>
@@ -248,12 +236,12 @@ function EditStoryline(props) {
                             </Grid>
                         </Grid>
                         <Grid container direction="row" justify="center">
-                            <CustomButton variant="contained" onClick={handleSave} className={classes.margin}>
+                            <Button variant="contained" color="primary" onClick={handleSave} className={classes.margin}>
                                 Save
-                    </CustomButton>
-                            <CustomButton variant="contained" onClick={closeEditStoryline} className={classes.margin}>
+                    </Button>
+                            <Button variant="contained" color="primary" onClick={closeEditStoryline} className={classes.margin}>
                                 Cancel
-                    </CustomButton>
+                    </Button>
                         </Grid>
                     </div>
                 </Zoom>
