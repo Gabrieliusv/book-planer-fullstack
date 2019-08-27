@@ -10,7 +10,8 @@ import {
   OPEN_CHARACTERS_OVERVIEW,
   OPEN_EDIT_STORYLINE,
   CLOSE_EDIT_STORYLINE,
-  NAV_PROFILE
+  NAV_PROFILE,
+  CLEAR_NAVIGATION
 } from '../actions/types';
 
 const initialState = {
@@ -92,6 +93,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         profileNav: action.payload
+      };
+    case CLEAR_NAVIGATION:
+      return {
+        ...state,
+        addCharacterWindow: false,
+        trashWindow: false,
+        deleteNotificationWindow: { open: false },
+        editCharacterWindow: { open: false },
+        characterInfoWindow: false,
+        charactersOverviewWindow: true,
+        editStoryWindow: { open: false },
+        profileNav: 'display'
       };
     default:
       return state;

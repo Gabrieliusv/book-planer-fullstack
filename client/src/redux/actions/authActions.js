@@ -9,7 +9,8 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_PROFILE,
-  CLEAR_CHARACTERS
+  CLEAR_CHARACTERS,
+  CLEAR_NAVIGATION
 } from './types';
 import { setAlert, setLoginAlert, removeAlert } from './alertActions';
 import setAuthToken from '../../utils/setAuthToken';
@@ -121,6 +122,9 @@ export const logout = () => dispatch => {
   });
   dispatch({
     type: LOGOUT
+  });
+  dispatch({
+    type: CLEAR_NAVIGATION
   });
 };
 

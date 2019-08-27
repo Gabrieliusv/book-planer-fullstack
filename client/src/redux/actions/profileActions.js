@@ -1,7 +1,13 @@
 import axios from 'axios';
 import { setAlert, removeAlert } from './alertActions';
-import { GET_PROFILE, PROFILE_ERROR } from './types';
-import { logout } from './authActions';
+import {
+  GET_PROFILE,
+  PROFILE_ERROR,
+  ACCOUNT_DELETED,
+  CLEAR_PROFILE,
+  CLEAR_CHARACTERS,
+  CLEAR_NAVIGATION
+} from './types';
 
 //Get current users profile
 export const getCurrentProfile = () => async dispatch => {
@@ -50,7 +56,26 @@ export const createProfile = (formData, update) => async dispatch => {
 
 //Delete user account
 export const deleteAccount = () => async dispatch => {
-  await axios.delete('/api/profile/');
+  try {
+    await axios.delete('/api/profile/');
 
-  dispatch(logout());
+    localStorage.removeItem('token');
+    dispatch({
+      type: CLEAR_PROFILE
+    });
+    dispatch({
+      type: CLEAR_CHARACTERS
+    });
+    dispatch({
+      type: ACCOUNT_DELETED
+    });
+    dispatch({
+      type: CLEAR_NAVIGATION
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
 };
