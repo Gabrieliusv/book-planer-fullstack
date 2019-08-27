@@ -51,7 +51,7 @@ function ConfirmDel(props) {
         action={[
           <Button
             key='undo'
-            color='secondary'
+            color='primary'
             size='small'
             onClick={() =>
               handleUndo(
@@ -65,7 +65,7 @@ function ConfirmDel(props) {
           <IconButton
             key='close'
             aria-label='Close'
-            color='inherit'
+            color='primary'
             className={classes.close}
             onClick={closeDeleteNotification}
           >

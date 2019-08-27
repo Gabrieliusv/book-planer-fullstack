@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, useMediaQuery, TextField, Grid } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogTitle, useMediaQuery, TextField, Grid } from '@material-ui/core';
+import BlueButton from '../customMui/BlueButton';
 import { connect } from 'react-redux';
 import { addCharacter } from '../../redux/actions/characterActions';
 import { toggleAddCharacter } from '../../redux/actions/navigationActions'
@@ -201,12 +202,12 @@ function AddCharacter(props) {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={newChar.name === "" ? requiredInput : saveChar} color="primary">
+                    <BlueButton onClick={newChar.name === "" ? requiredInput : saveChar}>
                         Save
-          </Button>
-                    <Button onClick={closeAdd} color="primary">
+          </BlueButton>
+                    <BlueButton onClick={closeAdd}>
                         Close
-          </Button>
+          </BlueButton>
                 </DialogActions>
             </Dialog>
         </div>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,6 +16,8 @@ import {
   ListItemIcon,
   useMediaQuery
 } from '@material-ui/core';
+import RedButton from '../customMui/RedButton';
+import BlueButton from '../customMui/BlueButton';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { toggleTrash } from '../../redux/actions/navigationActions';
@@ -65,8 +66,12 @@ function Trash(props) {
   };
 
   const handleDelete = () => {
-    deleteTrash(checked);
-    setChecked([]);
+    if (checked.length === 0) {
+      return;
+    } else {
+      deleteTrash(checked);
+      setChecked([]);
+    }
   };
 
   const handleRestore = () => {
@@ -92,6 +97,7 @@ function Trash(props) {
         className={classes.cardHeader}
         avatar={
           <Checkbox
+            color='primary'
             onClick={() => handleToggleAll(items)}
             checked={checked.length === items.length && items.length !== 0}
             indeterminate={
@@ -113,6 +119,7 @@ function Trash(props) {
           >
             <ListItemIcon>
               <Checkbox
+                color='primary'
                 checked={checked.indexOf(value) !== -1}
                 tabIndex={-1}
                 disableRipple
@@ -147,17 +154,11 @@ function Trash(props) {
         <DialogActions>
           {inTrash.length === 0 ? null : (
             <>
-              <Button onClick={handleRestore} color='primary'>
-                Restore
-              </Button>
-              <Button onClick={handleDelete} color='primary'>
-                Delete
-              </Button>
+              <BlueButton onClick={handleRestore}>Restore</BlueButton>
+              <RedButton onClick={handleDelete}>Delete</RedButton>
             </>
           )}
-          <Button onClick={toggleTrash} color='primary'>
-            Close
-          </Button>
+          <BlueButton onClick={toggleTrash}>Close</BlueButton>
         </DialogActions>
       </Dialog>
     </div>

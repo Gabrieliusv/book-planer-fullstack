@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Grid, useMediaQuery } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Grid, useMediaQuery } from '@material-ui/core';
+import BlueButton from '../customMui/BlueButton';
 import { useTheme } from '@material-ui/core/styles';
 import { closeEditCharacter } from '../../redux/actions/navigationActions';
 import { editCharacter } from '../../redux/actions/characterActions';
@@ -195,12 +196,12 @@ function EditCharacter(props) {
                         </Grid>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={newChar.name === "" ? requiredInput : saveChar} color="primary">
+                        <BlueButton onClick={newChar.name === "" ? requiredInput : saveChar} color="primary">
                             Save
-                        </Button>
-                        <Button onClick={closeEdit} color="primary" autoFocus>
+                        </BlueButton>
+                        <BlueButton onClick={closeEdit} color="primary" autoFocus>
                             Close
-                        </Button>
+                        </BlueButton>
                     </DialogActions>
                 </Dialog>
             }
