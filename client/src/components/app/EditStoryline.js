@@ -92,10 +92,10 @@ function EditStoryline({closeEditStoryline, editStory, navigation:{editStoryWind
     }
 
     const onAllChange = (event) => {
-        setStory(oldValues => ({
-            ...oldValues,
+        setStory({
+            ...story,
             [event.target.name]: event.target.value,
-        }));
+    });
     }
 
     const onSelectStoryChange = (event) => {

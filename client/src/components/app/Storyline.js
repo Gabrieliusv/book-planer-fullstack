@@ -123,10 +123,10 @@ const StoryLine = ({openEditStoryline, addStory, characters: { charactersInfo}, 
     }
 
     const onAllChange = (event) => {
-        setNewStoryline(oldValues => ({
-            ...oldValues,
+        setNewStoryline({
+            ...newStoryline,
             [event.target.name]: event.target.value,
-        }));
+        });
     }
 
     const handleEditStoryline = () => {
