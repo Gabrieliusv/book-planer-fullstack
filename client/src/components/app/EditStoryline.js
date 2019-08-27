@@ -4,7 +4,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { closeEditStoryline } from '../../redux/actions/navigationActions';
-import { editCharacter } from '../../redux/actions/characterActions';
+import { editStory } from '../../redux/actions/characterActions';
 
 const useStyles = makeStyles(theme => ({
     margin: {
@@ -30,11 +30,11 @@ const useStyles = makeStyles(theme => ({
 function EditStoryline(props) {
     const { editStoryWindow } = props.navigation;
     const { character } = props.navigation.editStoryWindow;
-    const { closeEditStoryline, editCharacter } = props;
+    const { closeEditStoryline, editStory } = props;
     const classes = useStyles();
     const [selectedStory, setSelectedStory] = useState({ index: '' });
     const [requiredFields, setRequiredFields] = useState(false);
-    const [editStory, setEditStory] = useState(false)
+    const [story, setStory] = useState(false)
 
     const makeColor = (color) => {
         switch (color) {
@@ -50,38 +50,37 @@ function EditStoryline(props) {
     }
 
     const handleSave = () => {
-        const { index } = editStoryWindow;
-        const isEmpty = Object.values(editStory).some(x => (x === null || x === ''));
-        let newCharacter = { ...character };
+        const isEmpty = Object.values(story).some(x => (x === null || x === ''));
+        let storyline = [ ...character.story ];
         const storyIndex = selectedStory.index;
         const nextStoryIndex = selectedStory.index + 1;
         const prevStoryIndex = selectedStory.index - 1;
-        const lineColor = makeColor(editStory.effect);
+        const lineColor = makeColor(story.effect);
         if (character.story.length === 1 && isEmpty === false) {
-            const newStory = { ...editStory, beforeColor: lineColor, color: lineColor };
-            newCharacter.story.splice(storyIndex, 1, { ...newStory });
-            editCharacter(newCharacter, index);
+            const newStory = { ...story, beforeColor: lineColor, color: lineColor };
+            storyline.splice(storyIndex, 1, { ...newStory });
+            editStory(storyline, character._id);
             closeEditStoryline();
         } else if (character.story.length > 1 && isEmpty === false && storyIndex !== 0) {
             if (character.story.length === storyIndex + 1) {
-                const newStory = { ...editStory, beforeColor: character.story[prevStoryIndex].color, color: lineColor };
-                newCharacter.story.splice(storyIndex, 1, { ...newStory });
-                editCharacter(newCharacter, index);
+                const newStory = { ...story, beforeColor: character.story[prevStoryIndex].color, color: lineColor };
+                storyline.splice(storyIndex, 1, { ...newStory });
+                editStory(storyline, character._id);
                 closeEditStoryline();
             } else {
-                const newStory = { ...editStory, beforeColor: character.story[prevStoryIndex].color, color: lineColor };
+                const newStory = { ...story, beforeColor: character.story[prevStoryIndex].color, color: lineColor };
                 const nextStory = { ...character.story[nextStoryIndex], beforeColor: lineColor };
-                newCharacter.story.splice(storyIndex, 1, { ...newStory });
-                newCharacter.story.splice(nextStoryIndex, 1, { ...nextStory });
-                editCharacter(newCharacter, index);
+                storyline.splice(storyIndex, 1, { ...newStory });
+                storyline.splice(nextStoryIndex, 1, { ...nextStory });
+                editStory(storyline, character._id);
                 closeEditStoryline();
             }
         } else if (character.story.length > 1 && isEmpty === false && storyIndex === 0) {
-            const newStory = { ...editStory, beforeColor: lineColor, color: lineColor };
+            const newStory = { ...story, beforeColor: lineColor, color: lineColor };
             const nextStory = { ...character.story[nextStoryIndex], beforeColor: lineColor };
-            newCharacter.story.splice(storyIndex, 1, { ...newStory });
-            newCharacter.story.splice(nextStoryIndex, 1, { ...nextStory });
-            editCharacter(newCharacter, index);
+            storyline.splice(storyIndex, 1, { ...newStory });
+            storyline.splice(nextStoryIndex, 1, { ...nextStory });
+            editStory(storyline, character._id);
             closeEditStoryline();
         }
     }
@@ -90,12 +89,12 @@ function EditStoryline(props) {
         if (selectedStory.index === '') {
             setRequiredFields(true)
         } else {
-            setEditStory(character.story[selectedStory.index])
+            setStory(character.story[selectedStory.index])
         }
     }
 
     const onAllChange = (event) => {
-        setEditStory(oldValues => ({
+        setStory(oldValues => ({
             ...oldValues,
             [event.target.name]: event.target.value,
         }));
@@ -119,7 +118,7 @@ function EditStoryline(props) {
 
     return (
         <>
-            {editStory === false ?
+            {story === false ?
                 <Zoom in={editStoryWindow.open}>
                     <div className={classes.selectStory}>
                         <FormControl>
@@ -153,12 +152,12 @@ function EditStoryline(props) {
                         <Grid container spacing={2} className={classes.timelineForm}>
                             <Grid item xs={12} sm={12} md={8}>
                                 <TextField
-                                    error={editStory.event === ''}
+                                    error={story.event === ''}
                                     id="outlined-multiline-static"
                                     label="Event"
                                     name="event"
                                     multiline
-                                    value={editStory.event}
+                                    value={story.event}
                                     onChange={onAllChange}
                                     rows="10"
                                     margin="normal"
@@ -172,12 +171,12 @@ function EditStoryline(props) {
                             <Grid item xs={12} sm={12} md={4}>
                                 <Grid item xs={12}>
                                     <TextField
-                                        error={editStory.title === ''}
+                                        error={story.title === ''}
                                         id="outlined-multiline-static"
                                         label="Title"
                                         name="title"
                                         multiline
-                                        value={editStory.title}
+                                        value={story.title}
                                         onChange={onAllChange}
                                         rows="1"
                                         margin="normal"
@@ -190,12 +189,12 @@ function EditStoryline(props) {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        error={editStory.time === ''}
+                                        error={story.time === ''}
                                         id="outlined-multiline-static"
                                         label="Events Time"
                                         name="time"
                                         multiline
-                                        value={editStory.time}
+                                        value={story.time}
                                         onChange={onAllChange}
                                         rows="1"
                                         margin="normal"
@@ -210,8 +209,8 @@ function EditStoryline(props) {
                                     <FormControl className={classes.margin}>
                                         <InputLabel htmlFor="eff">Effect</InputLabel>
                                         <Select
-                                            error={editStory.effect === ''}
-                                            value={editStory.effect}
+                                            error={story.effect === ''}
+                                            value={story.effect}
                                             onChange={onAllChange}
                                             input={<Input name="effect" id="eff" />}
                                         >
@@ -226,8 +225,8 @@ function EditStoryline(props) {
                                     <FormControl className={classes.margin}>
                                         <InputLabel htmlFor="inten">Intensity</InputLabel>
                                         <Select
-                                            error={editStory.intensity === ''}
-                                            value={editStory.intensity}
+                                            error={story.intensity === ''}
+                                            value={story.intensity}
                                             onChange={onAllChange}
                                             input={<Input name="intensity" id="inten" />}
                                         >
@@ -266,11 +265,11 @@ function EditStoryline(props) {
 EditStoryline.propTypes = {
     navigation: PropTypes.object.isRequired,
     closeEditStoryline: PropTypes.func.isRequired,
-    editCharacter: PropTypes.func.isRequired
+    editStory: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
     navigation: state.navigation
 })
 
-export default connect(mapStateToProps, { closeEditStoryline, editCharacter })(EditStoryline)
+export default connect(mapStateToProps, { closeEditStoryline, editStory })(EditStoryline)

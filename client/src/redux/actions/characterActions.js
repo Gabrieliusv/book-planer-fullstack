@@ -9,7 +9,8 @@ import {
   EDIT_CHARACTER,
   CHARACTERS_LOADING,
   CHARACTER_ERROR,
-  ADD_STORY
+  ADD_STORY,
+  EDIT_STORY
 } from './types';
 
 export const getCharacters = () => async dispatch => {
@@ -199,6 +200,30 @@ export const addStory = (story, id) => async dispatch => {
 
     dispatch({
       type: ADD_STORY,
+      payload: { id, story: res.data }
+    });
+  } catch (err) {
+    dispatch({
+      type: CHARACTER_ERROR,
+      payload: {
+        msg: err.response.data.msg,
+        status: err.response.status
+      }
+    });
+  }
+};
+
+export const editStory = (story, id) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  try {
+    const res = await axios.patch(`/api/character/story/${id}`, story, config);
+
+    dispatch({
+      type: EDIT_STORY,
       payload: { id, story: res.data }
     });
   } catch (err) {

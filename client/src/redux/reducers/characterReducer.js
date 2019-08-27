@@ -9,7 +9,8 @@ import {
   RESTORE_CHARACTER_AT_INDEX,
   EDIT_CHARACTER,
   CLEAR_CHARACTERS,
-  ADD_STORY
+  ADD_STORY,
+  EDIT_STORY
 } from '../actions/types';
 
 const initialState = {
@@ -20,7 +21,7 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
-  const { payload, type, index, id } = action;
+  const { payload, type, index } = action;
   switch (type) {
     case GET_CHARACTERS:
       return {
@@ -89,6 +90,7 @@ export default function(state = initialState, action) {
         error: {}
       };
     case ADD_STORY:
+    case EDIT_STORY:
       return {
         ...state,
         charactersInfo: state.charactersInfo.map(char =>
