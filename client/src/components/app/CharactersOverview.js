@@ -13,6 +13,10 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     margin: theme.spacing(1)
+  },
+  grid: {
+    width: '99%',
+    padding: 10
   }
 }));
 
@@ -106,7 +110,7 @@ function CharactersOverview({
           Start planing your book by creating its characters, and story lines!
         </Typography>
       ) : charactersInfo.length > 0 ? (
-        <Grid container spacing={8}>
+        <Grid container spacing={2} className={classes.grid}>
           {charactersInfo.map(i => (
             <Grid item xs={12} key={i._id} align='center'>
               <Typography variant='h6'> {i.name} </Typography>
