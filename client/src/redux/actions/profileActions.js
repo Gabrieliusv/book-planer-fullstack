@@ -58,6 +58,7 @@ export const createProfile = (formData, update) => async dispatch => {
 export const deleteAccount = () => async dispatch => {
   try {
     await axios.delete('/api/profile/');
+    await axios.delete('/api/character/deleteAll');
 
     localStorage.removeItem('token');
     dispatch({

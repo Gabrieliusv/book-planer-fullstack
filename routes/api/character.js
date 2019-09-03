@@ -139,7 +139,7 @@ router.patch(
   }
 );
 
-//@route DELETE api/character
+//@route DELETE api/character/delete
 //@desc Delete a character
 //@access Private
 router.delete(
@@ -367,3 +367,19 @@ router.patch('/story/:id', auth, async (req, res) => {
 });
 
 module.exports = router;
+
+//@route DELETE api/character/deleteAll
+//@desc Delete a character
+//@access Private
+router.delete('/deleteAll', auth, async (req, res) => {
+  try {
+    await Character.deleteMany({ user: req.user.id });
+
+    return res.json({ msg: 'Characters deleted' });
+    //  }
+  } catch (err) {
+    console.error(err.message);
+
+    res.status(500).send('Server Error');
+  }
+});
