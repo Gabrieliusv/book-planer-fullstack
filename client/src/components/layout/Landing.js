@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Login from './Login';
 import { makeStyles } from '@material-ui/core/styles';
-import Image1 from '../images/book.jpg';
-import Image2 from '../images/pc-mobile.png';
+import Image1 from '../images/landing-2.svg';
+import Image2 from '../images/Landing-page.svg';
 import { connect } from 'react-redux';
 import Alert from './Alert';
 import { register } from '../../redux/actions/authActions';
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   landing: {
     backgroundImage: `url(${Image1})`,
     backgroundSize: 'cover',
-    backgroundAttachment: 'fixed',
+    backgroundPosition: 'center',
     width: '100%'
   },
   container: {
@@ -36,13 +36,18 @@ const useStyles = makeStyles(theme => ({
   paper: {
     background: 'rgba(241, 241, 239, 0.7)'
   },
-  showcase: { maxWidth: 700 },
+  showcase: {
+    maxWidth: 800
+  },
   signup: {
     maxHeight: 800,
     maxWidth: 450
   },
+  welcomeText: {
+    maxWidth: 505
+  },
   img: {
-    width: '100%'
+    width: '65%'
   },
   alert: {
     margin: theme.spacing(1)
@@ -109,19 +114,19 @@ const Landing = ({ register, setAlert, removeAlert, isAuthenticated }) => {
         <Grid
           container
           className={classes.container}
-          spacing={4}
+          spacing={2}
           direction='row'
           justify='center'
           alignItems='center'
         >
-          <Grid item xs={11} sm={9} md={7} lg={7} className={classes.showcase}>
+          <Grid item xs={11} sm={6} className={classes.showcase}>
             <Grid
               container
               direction='column'
               justify='center'
               alignItems='center'
             >
-              <Box p={1}>
+              <Box p={1} className={classes.welcomeText}>
                 <Typography variant='h6' align='center'>
                   Start Writing your book today!
                 </Typography>
@@ -131,10 +136,10 @@ const Landing = ({ register, setAlert, removeAlert, isAuthenticated }) => {
                   character's storyline for easier story planing.
                 </Typography>
               </Box>
-              <img className={classes.img} src={Image2} alt='pc mobile view' />
+              <img className={classes.img} src={Image2} alt='writer' />
             </Grid>
           </Grid>
-          <Grid item xs={11} sm={7} md={5} lg={5} className={classes.signup}>
+          <Grid item xs={11} sm={6} className={classes.signup}>
             <Paper elevation={2} className={classes.paper}>
               <Box p={2}>
                 <Typography variant='h6' align='center'>
