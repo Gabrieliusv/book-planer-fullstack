@@ -15,4 +15,4 @@ https://book-planning.herokuapp.com/
 * [Express](https://expressjs.com/) - Node.js web application framework
 * [MongoDB](https://www.mongodb.com/) - NoSQL database
 
-![preview](https://github.com/Gabrieliusv/book-planner-fullstack/preview3.gif)
+![preview](https://github.com/Gabrieliusv/book-planner-fullstack/blob/master/preview3.gif)
